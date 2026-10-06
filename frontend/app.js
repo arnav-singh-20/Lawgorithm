@@ -161,6 +161,7 @@
     }
     if (kind === "review" && state.config.review_enabled) { showView("review"); return loadReview(); }
     if (kind === "privacy") { showView("privacy"); return renderPrivacy(); }
+    if (["pricing", "terms", "refunds", "contact"].includes(kind)) { showView("info"); return renderInfo(kind); }
     showView("home");
   }
 
@@ -175,6 +176,8 @@
     else if (!$("#view-review").hidden && state.config.expert_review_enabled) renderExpertDesk();
     else if (!$("#view-review").hidden) renderReview();
     else if (!$("#view-privacy").hidden) renderPrivacy();
+    else if (!$("#view-info").hidden && state.infoPage) renderInfo(state.infoPage);
+    updatePayLabel();
   }
 
   /* ════════════ privacy / config ════════════ */
@@ -183,6 +186,8 @@
       state.config = { ...state.config, ...(await api("/config")) };
     } catch { /* keep the conservative defaults */ }
     updateReviewNav();
+    $("#footerPricing").hidden = $("#footerRefunds").hidden = !state.config.payments_enabled;
+    updatePayLabel();
     applyConfigText();
   }
 
@@ -216,42 +221,9 @@
   }
 
   /* ════════════ upload ════════════ */
-  const SAMPLES = {
-    rental: `RESIDENTIAL LEASE AGREEMENT
-This agreement is made at Bengaluru, Karnataka between the Landlord and the Tenant.
-
-1. TERM OF LEASE
-This lease is granted for a fixed term of 11 months commencing from 1 November 2026.
-
-2. RENT
-The Tenant shall pay a monthly rent of Rs 25,000 on or before the 5th day of each month.
-
-3. SECURITY DEPOSIT
-The Tenant shall pay a refundable security deposit equal to ten (10) months' rent, refundable within 90 days of vacating after deductions decided solely by the Landlord.
-
-4. MANDATORY LOCK-IN PERIOD
-The Tenant agrees to a lock-in period of 24 months. If the Tenant leaves earlier, the Tenant shall pay rent for all remaining months of the lock-in period.
-
-5. SUMMARY RE-ENTRY
-The Landlord may enter and repossess the premises without any court proceedings if rent is delayed by more than 15 days.`,
-    employment: `EMPLOYMENT AGREEMENT
-This agreement is made at Pune, Maharashtra between the Company and the Employee.
-
-1. POSITION AND SALARY
-The Employee shall serve as Software Engineer and receive a monthly salary of Rs 75,000, payable on the last working day of each month.
-
-2. PROBATION
-The Employee shall be on probation for six months, during which either party may terminate with 7 days' notice.
-
-3. NON-COMPETE RESTRICTION
-For 2 years after leaving the Company for any reason, the Employee shall not join or start any competing business anywhere in India.
-
-4. NOTICE PERIOD
-After probation, either party may terminate this agreement by giving 90 days' written notice or salary in lieu of notice.
-
-5. PENALTY FOR BREACH
-For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000 as liquidated damages without proof of actual loss.`,
-  };
+  // The sample contracts live in frontend/samples/ -- the server recognises them
+  // byte-for-byte, so trying a sample is always free (backend/payments).
+  const SAMPLE_FILES = { rental: "rental.txt", employment: "employment.txt" };
 
   const ACCEPTED = /\.(pdf|jpe?g|png|docx|txt)$/i;
 
@@ -268,10 +240,15 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
     ["dragleave", "drop"].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.remove("is-dragging"); }));
     zone.addEventListener("drop", e => { const f = e.dataTransfer.files[0]; if (f) setFile(f); });
 
-    $$("[data-sample]").forEach(btn => btn.addEventListener("click", () => {
+    $$("[data-sample]").forEach(btn => btn.addEventListener("click", async () => {
       const type = btn.dataset.sample;
       setDocType(type);
-      setFile(new File([SAMPLES[type]], `sample_${type === "rental" ? "lease" : "job_offer"}.txt`, { type: "text/plain" }));
+      let text;
+      try { text = await (await fetch(`${API}/static/samples/${SAMPLE_FILES[type]}`)).text(); }
+      catch { return showUploadError(t("err.network")); }
+      setFile(new File([text], `sample_${type === "rental" ? "lease" : "job_offer"}.txt`, { type: "text/plain" }));
+      state.isSample = true;
+      updatePayLabel();
     }));
 
     $("#analyzeBtn").addEventListener("click", startAnalysis);
@@ -293,11 +270,13 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
 
   function setFile(file) {
     hideUploadError();
+    state.isSample = false;
     if (file && !ACCEPTED.test(file.name) && !(file.type || "").startsWith("image/")) {
       showUploadError(t("err.type"));
       file = null;
     }
     state.file = file;
+    updatePayLabel();
     $("#fileChip").hidden = !file;
     $("#fileName").textContent = file ? file.name : "";
     updateAnalyzeEnabled();
@@ -319,6 +298,12 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
     form.append("file", state.file, name);
     form.append("document_type", state.docType);
     form.append("consent", "true");   // DPDP: the box above was ticked
+
+    if (needsPayment()) {
+      const paid = await payWithRazorpay("analysis", state.file.name);
+      if (!paid) { btn.disabled = false; return; }
+      Object.entries(paid).forEach(([k, v]) => form.append(k, v));
+    }
 
     try {
       const { job_id } = await api("/analyze-document/start", { method: "POST", body: form });
@@ -373,7 +358,8 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
     }
     if (job.status === "failed") {
       go("#/");
-      showUploadError(job.error || t("err.generic"));
+      showUploadError([job.error || t("err.generic"),
+        job.refunded ? t("pay.refunded", { price: state.config.price_analysis }) : ""].filter(Boolean).join(" "));
       updateAnalyzeEnabled();
       return;
     }
@@ -407,6 +393,72 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
 
   function normaliseJobResult(result) {
     return { ...result, clauses: result.clauses || [], failed_clauses: result.failed_clauses || [] };
+  }
+
+  /* ════════════ payments (Razorpay) ════════════ */
+  const needsPayment = () => state.config.payments_enabled && state.config.price_analysis > 0 && !state.isSample;
+
+  function updatePayLabel() {
+    const cfg = state.config;
+    const label = $("#analyzeLabel");
+    const note = $("#priceNote");
+    if (!label) return;
+    label.textContent = needsPayment() ? t("pay.button", { price: cfg.price_analysis }) : t("upload.cta");
+    const priced = cfg.payments_enabled && cfg.price_analysis > 0;
+    note.hidden = !priced;
+    if (priced) {
+      note.replaceChildren(state.isSample ? t("pay.noteFreeSample") : t("pay.note", { price: cfg.price_analysis }), " ",
+        h("a", { href: "#/pricing", text: t("footer.pricing") }));
+    }
+  }
+
+  let razorpayScript = null;
+  function loadRazorpay() {
+    if (window.Razorpay) return Promise.resolve();
+    razorpayScript = razorpayScript || new Promise((resolve, reject) => {
+      const el = document.createElement("script");
+      el.src = "https://checkout.razorpay.com/v1/checkout.js";
+      el.onload = resolve;
+      el.onerror = () => { razorpayScript = null; reject(new Error(t("err.network"))); };
+      document.head.append(el);
+    });
+    return razorpayScript;
+  }
+
+  // Resolves with {razorpay_order_id, razorpay_payment_id, razorpay_signature}, or null if not paid.
+  async function payWithRazorpay(purpose, description) {
+    toast(t("pay.opening"));
+    let order;
+    try {
+      await loadRazorpay();
+      order = await api("/payments/order", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ purpose }),
+      });
+    } catch (err) {
+      showUploadError(err.message);
+      return null;
+    }
+    return new Promise(resolve => {
+      let settled = false;
+      const done = value => { if (!settled) { settled = true; resolve(value); } };
+      const checkout = new window.Razorpay({
+        key: order.key_id,
+        order_id: order.order_id,
+        amount: order.amount,
+        currency: order.currency,
+        name: state.config.business_name || "Lawgorithm",
+        description: (description || "").slice(0, 60),
+        theme: { color: "#E8962E" },
+        handler: response => done({
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        }),
+        modal: { ondismiss: () => { toast(t("pay.cancelled")); done(null); } },
+      });
+      checkout.on("payment.failed", () => toast(t("pay.failed")));   // they can retry inside the checkout
+      checkout.open();
+    });
   }
 
   /* ════════════ results ════════════ */
@@ -1002,17 +1054,24 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
     }
 
     const consent = h("input", { type: "checkbox", id: "expertConsent" });
-    const button = h("button", { class: "btn btn-ink btn-small", type: "button" }, t("expert.send"),
+    const priced = cfg.payments_enabled && cfg.price_expert > 0;
+    const button = h("button", { class: "btn btn-ink btn-small", type: "button" },
+      priced ? t("pay.expertButton", { price: cfg.price_expert }) : t("expert.send"),
       h("span", { class: "btn-arrow", "aria-hidden": "true", text: "→" }));
     button.addEventListener("click", async () => {
       if (!consent.checked) { toast(t("expert.consentNeeded")); consent.focus(); return; }
       button.disabled = true;
+      let paid = {};
+      if (cfg.payments_enabled && cfg.price_expert > 0) {
+        paid = await payWithRazorpay("expert", doc.filename);
+        if (!paid) { button.disabled = false; return; }
+      }
       button.firstChild.textContent = t("expert.sending");
       try {
         const ticket = await api("/expert-review", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ document_id: doc.document_id, clause_row_ids: uncertain.map(c => c.clause_row_id), consent: true }),
+          body: JSON.stringify({ document_id: doc.document_id, clause_row_ids: uncertain.map(c => c.clause_row_id), consent: true, ...paid }),
         });
         rememberCheck({ id: ticket.id, docId: doc.document_id, filename: doc.filename, created: ticket.created_at });
         go(`#/expert/${ticket.id}`);
@@ -1196,17 +1255,27 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
     const manage = data.role === "owner"
       ? h("button", { class: "btn btn-ink btn-small", type: "button", text: `👥 ${t("desk.manage")}`, onclick: () => toggleTeamPanel() })
       : null;
+    const messagesBtn = data.role === "owner"
+      ? h("button", { class: "btn btn-outline btn-small", type: "button", text: `📨 ${t("desk.messages")}`, onclick: () => {
+          state.messagesOpen = !state.messagesOpen;
+          const panel = $("#messagesPanel");
+          panel.hidden = !state.messagesOpen;
+          if (state.messagesOpen) loadMessages(panel);
+        } })
+      : null;
     const head = h("div", { class: "desk-head" },
       h("span", { text: t("desk.signedIn", { name: data.reviewer }) }),
       h("strong", { text: plural("desk.count", data.count) }),
-      manage, signOut);
+      manage, messagesBtn, signOut);
     const team = h("section", { class: "team-panel", id: "teamPanel", hidden: !state.teamOpen });
     if (state.teamOpen) loadTeam(team);
+    const inbox = h("section", { class: "team-panel", id: "messagesPanel", hidden: !state.messagesOpen });
+    if (state.messagesOpen) loadMessages(inbox);
     if (!data.items.length) {
-      return $("#expertDesk").replaceChildren(head, team,
+      return $("#expertDesk").replaceChildren(head, team, inbox,
         h("div", { class: "empty-state" }, h("span", { class: "big", "aria-hidden": "true", text: "✨" }), h("p", { text: t("desk.empty") })));
     }
-    $("#expertDesk").replaceChildren(head, team, ...data.items.map(deskCard));
+    $("#expertDesk").replaceChildren(head, team, inbox, ...data.items.map(deskCard));
   }
 
   // ── owner: manage reviewers (add -> invite link, remove -> revoked at once) ──
@@ -1331,6 +1400,118 @@ For any breach of company policy the Employee shall pay a penalty of Rs 5,00,000
             : `${src.law}, s.${src.section}`, src.title ? ` — ${src.title}` : "")))
           : h("p", { text: t("desk.noSources") })),
       form);
+  }
+
+  /* ════════════ pricing / terms / refunds / contact ════════════ */
+  // Terms and refund policy are legal documents: English (with a translated
+  // note saying so), as is usual in India. Everything else is translated.
+  const rupees = n => `₹${n}`;
+
+  function legalSections(kind) {
+    const c = state.config;
+    const biz = c.business_name || "Lawgorithm";
+    const reach = c.contact_email ? `the Contact page or ${c.contact_email}` : "the Contact page";
+    if (kind === "terms") return [
+      ["What Lawgorithm is", `${biz} is a software tool that explains rental and job contracts in plain language and points to the Indian law behind each point. It is not a law firm, it does not give legal advice, and using it does not create a lawyer–client relationship. Explanations are produced by AI and can be wrong; we show how confident each answer is and flag clauses we could not confirm. For any important decision, and anything marked “Talk to a lawyer”, consult an enrolled advocate.`],
+      ["Human checks", `If you ask for a human check, a member of our team${c.reviewer_kind === "legal" ? " (a lawyer or law student)" : ""} looks at the clauses you send and adds a note. This is a second opinion on our explanation, not legal advice or representation.`],
+      ["Your use", "Upload only documents you have the right to share. Do not use the service for anything unlawful or to harm others. We may refuse or stop service that is being misused."],
+      ["Payments", c.payments_enabled
+        ? `A contract check costs ${rupees(c.price_analysis)}${c.price_expert > 0 ? ` and a human check ${rupees(c.price_expert)}` : ""}; the price is shown before you pay. Payments are processed by Razorpay — we never see your card, UPI or bank details. Prices are in Indian rupees. The sample contracts are free.`
+        : "The service is currently free to use."],
+      ["Refunds", "See the Refund policy. In short: if a check fails on our side, you are refunded in full automatically."],
+      ["Privacy", "Your contract is never saved; see the Privacy notice for exactly how your data is handled under the Digital Personal Data Protection Act, 2023."],
+      ["Liability", `We work hard to be accurate, but we do not guarantee any outcome. To the extent the law allows, ${biz}'s total liability for any claim is limited to the amount you paid for the check concerned.`],
+      ["Changes and law", `We may update these terms; the version on this page applies. These terms are governed by the laws of India. Questions: ${reach}.`],
+    ];
+    return [
+      ["Automatic refunds", `If you paid and the check fails on our side — for example the AI service is down — or you delete your contract before the check starts, the full amount is refunded automatically. You don't need to ask.`],
+      ["Other problems", `If you were charged but didn't receive your results, or were charged twice, write to us through ${reach} within 7 days with the payment ID from your Razorpay receipt. We'll check and refund in full.`],
+      ["After the results are delivered", "A check is complete once your results are shown, so it isn't refundable after that. If you think something went wrong with your results, tell us — we will look into it."],
+      ["How long it takes", "Refunds go back to the original payment method (UPI, card or bank) and normally reach you within 5–7 working days, depending on your bank."],
+      ["Cancellation", "There are no subscriptions — you pay per contract, so there is nothing to cancel. You can close the payment window at any time before paying and nothing is charged."],
+    ];
+  }
+
+  function renderInfo(kind) {
+    state.infoPage = kind;
+    const c = state.config;
+    const englishNote = $("#infoEnglishNote");
+    englishNote.hidden = !(kind === "terms" || kind === "refunds") || window.i18n.lang === "en";
+    englishNote.textContent = t("legal.englishOnly");
+    const body = $("#infoBody");
+
+    if (kind === "terms" || kind === "refunds") {
+      $("#infoEyebrow").textContent = t(kind === "terms" ? "footer.terms" : "footer.refunds");
+      $("#infoTitle").textContent = kind === "terms" ? "Terms of use" : "Refund & cancellation policy";
+      body.replaceChildren(h("ol", { class: "privacy-list" }, legalSections(kind).map(([title, text]) =>
+        h("li", {}, h("strong", { text: title }), h("p", { text })))));
+      return;
+    }
+
+    if (kind === "pricing") {
+      $("#infoEyebrow").textContent = t("pricing.eyebrow");
+      $("#infoTitle").textContent = t("pricing.title");
+      const price = n => (c.payments_enabled && n > 0 ? rupees(n) : t("pricing.free"));
+      const card = (title, amount, text) => h("div", { class: "price-card" },
+        h("span", { class: "mono-label", text: title }),
+        h("strong", { class: "price-amount", text: amount }),
+        h("p", { text }));
+      body.replaceChildren(h("div", { class: "price-grid" },
+        card(t("pricing.check"), `${price(c.price_analysis)}${c.payments_enabled && c.price_analysis > 0 ? ` ${t("pricing.perContract")}` : ""}`, t("pricing.checkD")),
+        card(t("pricing.samples"), t("pricing.free"), t("pricing.samplesD")),
+        card(t("pricing.expert"), c.payments_enabled && c.price_expert > 0 ? `${rupees(c.price_expert)} ${t("pricing.perContract")}` : t("pricing.expertFree"), t("pricing.expertD")),
+        card(t("pricing.refund"), "↺", t("pricing.refundD"))));
+      return;
+    }
+
+    // contact / grievances (DPDP Act)
+    $("#infoEyebrow").textContent = t("contact.eyebrow");
+    $("#infoTitle").textContent = t("contact.title");
+    const topic = h("select", { name: "topic", class: "desk-input" },
+      ["grievance", "payment", "question", "other"].map(v => h("option", { value: v, text: t(`contact.t.${v}`) })));
+    const message = h("textarea", { name: "message", rows: 5, required: true, minlength: 5, maxlength: 2000 });
+    const replyTo = h("input", { type: "text", name: "reply_to", class: "desk-input", maxlength: 200, autocomplete: "email" });
+    const trap = h("input", { type: "text", name: "website", tabindex: "-1", autocomplete: "off", class: "visually-hidden", "aria-hidden": "true" });
+    const form = h("form", { class: "desk-form contact-form" },
+      h("label", {}, h("span", { text: t("contact.topic") }), topic),
+      h("label", {}, h("span", { text: t("contact.message") }), message),
+      h("label", {}, h("span", { text: t("contact.replyTo") }), replyTo, h("small", { class: "desk-help", text: t("contact.replyHelp") })),
+      trap,
+      h("button", { class: "btn btn-ink", type: "submit", text: t("contact.send") }));
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      try {
+        await api("/contact", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: topic.value, message: message.value.trim(), reply_to: replyTo.value.trim(), website: trap.value }) });
+        form.replaceWith(h("p", { class: "contact-sent", text: `✓ ${t("contact.sent")}` }));
+      } catch (err) { toast(err.message); }
+    });
+    body.replaceChildren(
+      h("p", { class: "section-sub", text: t("contact.sub") }),
+      c.contact_form ? form : null,
+      c.contact_email ? h("p", {}, `${t("contact.email")} `, h("a", { href: `mailto:${c.contact_email}`, text: c.contact_email })) : null,
+      h("p", { class: "desk-help" }, `${t("contact.rights")} `,
+        h("a", { href: c.dpdp_act_url || "#/privacy", target: "_blank", rel: "noopener noreferrer", text: "DPDP Act, 2023 ↗" })));
+  }
+
+  // ── owner: messages from the Contact page ──
+  async function loadMessages(panel) {
+    const headers = { "X-Reviewer-Key": reviewerKey() || "" };
+    let messages = [];
+    try { messages = (await api("/contact/messages", { headers })).messages; }
+    catch (err) { return panel.replaceChildren(h("p", { class: "error-banner", text: err.message })); }
+    panel.replaceChildren(h("h3", { text: t("desk.messages") }),
+      messages.length ? h("ul", { class: "team-list" }, messages.map(m => h("li", { class: "message-row" },
+        h("div", {},
+          h("span", { class: "mono-label", text: `${t(`contact.t.${m.topic}`)} · ${new Date(m.at).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` }),
+          h("p", { class: "message-text", text: m.message }),
+          h("p", { class: "desk-help", text: `${t("desk.replyTo")}: ${m.reply_to || t("desk.noReplyTo")}` })),
+        h("button", { class: "btn btn-outline btn-small", type: "button", text: t("desk.delete"), onclick: async () => {
+          if (!confirm(t("desk.deleteMsgConfirm"))) return;
+          try { await api(`/contact/messages/${m.id}`, { method: "DELETE", headers }); loadMessages(panel); }
+          catch (err) { toast(err.message); }
+        } }))))
+      : h("p", { class: "desk-help", text: t("desk.messagesEmpty") }));
   }
 
   /* ════════════ landing page ════════════ */

@@ -80,7 +80,8 @@ def analyze_file(
         raise AnalysisError(
             422, "No readable text was found in this file. If it's a photo, retake it in good light, flat and in focus."
         )
-    clauses = [c for c in segment_clauses(cleaned) if c["clause_id"] != "0"]  # preamble: nothing to classify
+    # preamble and signature block: nothing to classify
+    clauses = [c for c in segment_clauses(cleaned) if c["clause_id"] != "0" and c.get("kind") != "signature"]
 
     # Step 1: summarise the whole document once; the summary is shown to
     # the user and passed into every clause's agent run as context.

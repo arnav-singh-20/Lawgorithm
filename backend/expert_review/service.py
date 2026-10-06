@@ -171,6 +171,13 @@ def create_ticket(document: dict, clause_row_ids: list[str], consent: bool) -> d
     return _public_view(ticket)
 
 
+def has_ticket(document_id: str) -> bool:
+    """Sending again for the same analysis returns the existing ticket -- never charge twice."""
+    store = get_store() if enabled() else None
+    tid = _ticket_for_document.get(document_id)
+    return bool(store and tid and store.get(tid))
+
+
 def _clause_for_review(c: dict) -> dict:
     text, _ = redact(c.get("clause_text") or "")       # belt and braces: already redacted upstream
     return {

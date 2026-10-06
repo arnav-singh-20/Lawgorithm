@@ -7,10 +7,11 @@ from backend.database.db import get_db
 from backend.database.models import Document
 from backend.llm.base import LLMUnavailableError
 from backend.config import (
-    DPDP_ACT_URL, EXPERT_REVIEW_KEEP_DAYS, EXPERT_REVIEW_MAX_DAYS, FREE_LEGAL_AID, LLM_PROVIDER, REVIEWER_KIND, PRIVACY_CONTACT,
+    DPDP_ACT_URL, EXPERT_REVIEW_KEEP_DAYS, EXPERT_REVIEW_MAX_DAYS, CONTACT_EMAIL, BUSINESS_NAME, FREE_LEGAL_AID, LLM_PROVIDER, REVIEWER_KIND, PRIVACY_CONTACT,
     RESULT_TTL_MINUTES, STORE_ANALYSES,
 )
 from backend.expert_review import service as expert_review
+from backend.payments import razorpay
 from backend.services import jobs
 from backend.services.clause_service import clause_to_dict
 from backend.translation.translator import translate_explanation, translate_and_validate
@@ -37,6 +38,12 @@ def public_config():
         "expert_review_max_days": EXPERT_REVIEW_MAX_DAYS,
         "free_legal_aid": FREE_LEGAL_AID,
         "reviewer_kind": "legal" if REVIEWER_KIND == "legal" else "team",
+        "payments_enabled": razorpay.enabled(),
+        "price_analysis": razorpay.price("analysis") / 100,      # rupees; 0 = free
+        "price_expert": razorpay.price("expert") / 100,
+        "contact_email": CONTACT_EMAIL or None,
+        "contact_form": expert_review.get_store() is not None,
+        "business_name": BUSINESS_NAME,
         "privacy_contact": PRIVACY_CONTACT or None,
         "dpdp_act_url": DPDP_ACT_URL,
     }

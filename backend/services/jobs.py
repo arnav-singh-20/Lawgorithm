@@ -22,6 +22,7 @@ from pathlib import Path
 
 from backend.config import RESULT_TTL_MINUTES, STORE_ANALYSES
 from backend.database.db import SessionLocal
+from backend.payments import razorpay
 from backend.services.analysis_pipeline import AnalysisError, analyze_file
 
 _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="analysis")
@@ -44,7 +45,8 @@ def _expired(job: dict) -> bool:
     return age > datetime.timedelta(minutes=RESULT_TTL_MINUTES)
 
 
-def submit(path: Path, filename: str, document_type: str, session_factory=SessionLocal) -> str:
+def submit(path: Path, filename: str, document_type: str, session_factory=SessionLocal,
+           payment_id: str | None = None) -> str:
     job_id = uuid.uuid4().hex
     with _lock:
         _jobs[job_id] = {
@@ -68,7 +70,7 @@ def submit(path: Path, filename: str, document_type: str, session_factory=Sessio
             "expires_in_minutes": RESULT_TTL_MINUTES,
         }
         _prune()
-    _executor.submit(_run, job_id, path, filename, document_type, session_factory)
+    _executor.submit(_run, job_id, path, filename, document_type, session_factory, payment_id)
     return job_id
 
 
@@ -114,9 +116,11 @@ def _update(job_id: str, **fields) -> None:
         job.update({k: v for k, v in fields.items() if v is not None or k == "current_title"})
 
 
-def _run(job_id: str, path: Path, filename: str, document_type: str, session_factory) -> None:
-    if job_id not in _jobs:      # deleted while queued
+def _run(job_id: str, path: Path, filename: str, document_type: str, session_factory,
+         payment_id: str | None = None) -> None:
+    if job_id not in _jobs:      # deleted while queued: nothing was delivered, so refund
         path.unlink(missing_ok=True)
+        razorpay.refund(payment_id, "deleted before the check started")
         return
     _update(job_id, status="running")
     db = session_factory() if STORE_ANALYSES else None
@@ -124,8 +128,12 @@ def _run(job_id: str, path: Path, filename: str, document_type: str, session_fac
         result = analyze_file(path, filename, document_type, db, on_progress=lambda **p: _update(job_id, **p))
         _update(job_id, status="done", stage="done", result=result, current_title=None, finished_at=_now())
     except AnalysisError as exc:
-        _update(job_id, status="failed", error=exc.detail, error_status=exc.status_code, finished_at=_now())
+        refunded = razorpay.refund(payment_id, "analysis failed")
+        _update(job_id, status="failed", error=exc.detail, error_status=exc.status_code, refunded=refunded or None,
+                finished_at=_now())
     except Exception as exc:  # never leave a job "running" forever
+        refunded = razorpay.refund(payment_id, "analysis failed")
+        _update(job_id, refunded=refunded or None)
         _update(job_id, status="failed", error=f"Unexpected error: {type(exc).__name__}",
                 error_status=500, finished_at=_now())
     finally:

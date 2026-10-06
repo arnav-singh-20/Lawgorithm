@@ -34,3 +34,15 @@ def test_no_headers_returns_full_document():
     clauses = segment_clauses(text)
     assert len(clauses) == 1
     assert clauses[0]["title"] == "FULL DOCUMENT"
+
+
+def test_signature_block_is_not_a_clause():
+    text = ("1. RENT\nThe Tenant shall pay Rs 28,000 per month.\n\n"
+            "2. NOTICE\nEither party may give one month's notice.\n\n"
+            "LANDLORD\nRamesh Kumar Gowda\n\nTENANT\nPriya Sharma\n")
+    clauses = segment_clauses(text)
+    real = [c["title"] for c in clauses if c.get("kind") != "signature"]
+    assert real == ["RENT", "NOTICE"]
+    assert any(c.get("kind") == "signature" for c in clauses)          # kept, not silently dropped
+    # a real clause that happens to start with a party word is untouched
+    assert all(c.get("kind") != "signature" for c in segment_clauses("1. LANDLORD'S OBLIGATIONS\nThe Landlord shall repair the roof.\n"))

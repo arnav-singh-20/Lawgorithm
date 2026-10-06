@@ -4,7 +4,9 @@
     "category": "employment_non_compete",
     "clause_text": "The Employee agrees that for a period of 12 months following termination of employment, they shall not, directly or indirectly, engage in any business that competes with the Company within India.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You are prohibited from joining or starting any competing business for one year after leaving. Under Indian law, post-employment non-compete agreements are generally void and unenforceable as unreasonable restraints of trade.",
     "note": "Standard post-employment non-compete restraint."
@@ -14,7 +16,9 @@
     "category": "employment_non_compete",
     "clause_text": "During the term of employment, the Employee shall devote their entire working time exclusively to the Company and shall not engage in any other commercial or professional activity.",
     "risk_label": "green",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "While employed, you must work exclusively for this employer and cannot take up secondary jobs or moonlight. Exclusivity during the active employment term is legally valid and standard in India.",
     "note": "Exclusivity during active employment is valid and not void under Section 27."
@@ -34,7 +38,9 @@
     "category": "employment_penalty",
     "clause_text": "In the event the Employee resigns without serving the full notice period, the Employee shall pay the Company liquidated damages equal to six months' total gross salary.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "If you leave without serving full notice, you must pay six months of gross salary as damages. In Indian law, penalty amounts far exceeding actual loss are restricted, and the employer can only claim reasonable compensation for genuine loss.",
     "note": "Excessive liquidated damages clause acting as a penalty under Section 74."
@@ -44,7 +50,9 @@
     "category": "employment_penalty",
     "clause_text": "If the employee commits any disciplinary violation, the employer reserves the right to deduct 50% of the employee's earned monthly wages as an administrative fine.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The company can cut half your earned monthly salary for any disciplinary infraction. Arbitrary punitive wage deductions violate Indian employment standards and penalty doctrines.",
     "note": "Unlawful punitive wage deduction."
@@ -54,7 +62,9 @@
     "category": "employment_indemnity",
     "clause_text": "The Employee shall indemnify and hold harmless the Company against any and all losses, claims, or damages arising directly from the Employee's gross negligence or willful misconduct.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_124"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_124"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You agree to compensate the company for financial losses caused directly by your deliberate wrongdoing or gross negligence. This is an indemnity commitment requiring careful adherence.",
     "note": "Indemnity under Section 124 of Indian Contract Act."
@@ -64,27 +74,35 @@
     "category": "employment_termination",
     "clause_text": "Either party may terminate this employment agreement by providing thirty (30) days' prior written notice or payment of basic salary in lieu of notice.",
     "risk_label": "green",
-    "expected_sources": ["industrial_employment__standing_orders__act__1946_section_4"],
+    "expected_sources": [
+      "industrial_relations_code__2020_section_29",
+      "industrial_relations_code__2020_section_30"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "Either you or your employer can end the job with 30 days of written advance notice or 30 days of pay instead of serving notice. This is a standard mutual notice clause.",
-    "note": "Standard bilateral termination notice."
+    "note": "Standard bilateral termination notice. Standing Orders Act, 1946 repealed by the Industrial Relations Code, 2020 (in force 21 Nov 2025): now IR Code ss.29-30."
   },
   {
     "clause_id": "emp_termination_02",
     "category": "employment_termination",
     "clause_text": "The Company may terminate the Employee's services immediately without notice, while the Employee is required to give 90 days' notice before resigning.",
     "risk_label": "red",
-    "expected_sources": ["industrial_employment__standing_orders__act__1946_section_4"],
+    "expected_sources": [
+      "industrial_relations_code__2020_section_29",
+      "industrial_relations_code__2020_section_30"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The company can fire you instantly without notice, but requires you to give 3 months' notice to resign. This severe one-sided notice obligation creates an unfair contractual imbalance.",
-    "note": "Asymmetric termination clause."
+    "note": "Asymmetric termination clause. Standing Orders Act, 1946 repealed by the Industrial Relations Code, 2020 (in force 21 Nov 2025): now IR Code ss.29-30."
   },
   {
     "clause_id": "emp_training_bond_01",
     "category": "employment_bond",
     "clause_text": "The Employee agrees to serve the Company for a minimum of 24 months in consideration of initial training. If the Employee leaves earlier, they must pay a bond fee of INR 3,00,000.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You must stay for 2 years or pay ₹3,00,000 for training costs. Under Indian law, training bonds are only enforceable to recover actual, proven expenses incurred on specialized training, not as a general penalty.",
     "note": "Employment training bond scrutinized under Section 74."
@@ -94,17 +112,22 @@
     "category": "employment_probation",
     "clause_text": "The Employee will be on probation for a period of three (3) months, during which either party may terminate the employment with 7 days' written notice.",
     "risk_label": "green",
-    "expected_sources": ["industrial_employment__standing_orders__act__1946_section_4"],
+    "expected_sources": [
+      "industrial_relations_code__2020_section_29",
+      "industrial_relations_code__2020_section_30"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You have a 3-month probation period where either side can terminate the employment on short 7-day notice. This is standard in initial hiring.",
-    "note": "Standard probation clause."
+    "note": "Standard probation clause. Standing Orders Act, 1946 repealed by the Industrial Relations Code, 2020 (in force 21 Nov 2025): now IR Code ss.29-30."
   },
   {
     "clause_id": "emp_confidentiality_01",
     "category": "employment_confidentiality",
     "clause_text": "The Employee shall maintain strict confidentiality regarding proprietary trade secrets, customer data, and internal source code during and perpetually after the employment term.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You must never disclose company trade secrets or confidential client information even after you leave. Post-employment non-disclosure of genuine trade secrets is legally recognized.",
     "note": "Legitimate protection of trade secrets."
@@ -114,7 +137,9 @@
     "category": "employment_nonsolicit",
     "clause_text": "For 12 months post-employment, the Employee shall not solicit any active clients or induce any employees of the Company to leave their employment.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You agree not to poach clients or colleagues for one year after leaving. While customer non-solicitation is strictly scrutinized, reasonable employee non-solicit terms may be sustained depending on scope.",
     "note": "Non-solicitation of clients and staff."
@@ -134,7 +159,9 @@
     "category": "employment_ip",
     "clause_text": "The Employee assigns to the Company all rights to any invention or idea developed by the Employee at any time, including on personal time and outside company business, for 5 years post-employment.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The company claims ownership over everything you create outside work hours and for 5 years after leaving. This extreme overreach is legally problematic and highly restrictive.",
     "note": "Overreaching IP assignment beyond employment scope."
@@ -154,7 +181,9 @@
     "category": "employment_penalty",
     "clause_text": "The Company reserves the unconditional right to forfeit all statutory gratuity entitlements if the employee resigns prior to completing 10 years of service.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The company threatens to wipe out your statutory gratuity if you leave before 10 years. Under the Payment of Gratuity Act, gratuity vests at 5 years and cannot be forfeited arbitrarily by employer fiat.",
     "note": "Unlawful contractual modification of statutory gratuity rights."
@@ -164,7 +193,9 @@
     "category": "rental_security_deposit",
     "clause_text": "The Tenant shall pay a security deposit equal to ten months' rent, refundable within 60 days of vacating the premises.",
     "risk_label": "red",
-    "expected_sources": ["model_tenancy_act__2021_section_10"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_10"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You must pay 10 months' rent upfront as a security deposit. Under the Model Tenancy Act, residential security deposits are capped at a maximum of 2 months' rent, making 10 months excessively high.",
     "note": "Excessive security deposit exceeding statutory guidelines."
@@ -174,7 +205,9 @@
     "category": "rental_security_deposit",
     "clause_text": "The Tenant shall pay a security deposit equivalent to two (2) months' rent. The deposit shall be refunded within 30 days of handover of vacant possession minus unpaid dues.",
     "risk_label": "green",
-    "expected_sources": ["model_tenancy_act__2021_section_10"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_10"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You pay 2 months' rent as a refundable deposit returned within 30 days after vacating. This complies with standard tenancy guidelines in India.",
     "note": "Compliant standard rental security deposit."
@@ -184,7 +217,9 @@
     "category": "rental_notice_period",
     "clause_text": "The Landlord may revise and increase the monthly rent with 15 days' written notice to the Tenant.",
     "risk_label": "amber",
-    "expected_sources": ["model_tenancy_act__2021_section_11"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_11"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The landlord can raise your rent on just 15 days' notice. Model tenancy norms generally require at least 3 months' prior written notice before any rent revision takes effect.",
     "note": "Short notice period for rent revision."
@@ -194,7 +229,9 @@
     "category": "rental_notice_period",
     "clause_text": "Either the Landlord or Tenant may terminate the monthly tenancy by providing one month's notice in writing to the other party.",
     "risk_label": "green",
-    "expected_sources": ["transfer_of_property_act__1882_section_106"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_106"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "Either you or the landlord can end the tenancy by giving one month of written notice. This follows standard notice provisions under Section 106 of the Transfer of Property Act.",
     "note": "Standard 1-month tenancy notice."
@@ -204,7 +241,9 @@
     "category": "rental_lock_in",
     "clause_text": "The Tenant may not terminate this lease before the expiry of 24 months from the date of commencement, regardless of circumstances.",
     "risk_label": "red",
-    "expected_sources": ["model_tenancy_act__2021_section_23"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_23"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You are locked in for 2 full years with zero early exit rights under any circumstances. Rigid lock-in terms without exit mechanics or hardship clauses pose severe financial risk.",
     "note": "Rigid 24-month lock-in period."
@@ -214,7 +253,9 @@
     "category": "rental_lock_in",
     "clause_text": "The agreement includes a 6-month lock-in period. After 6 months, either party may terminate with 1 month notice without financial penalty.",
     "risk_label": "amber",
-    "expected_sources": ["model_tenancy_act__2021_section_23"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_23"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You must stay for the first 6 months, after which you can exit with 1 month notice. This is a common moderate lock-in structure in urban leases.",
     "note": "Standard moderate 6-month lock-in."
@@ -224,7 +265,9 @@
     "category": "rental_eviction",
     "clause_text": "The Landlord may re-enter and take possession of the premises without notice or court process if rent remains unpaid for more than 15 days.",
     "risk_label": "red",
-    "expected_sources": ["delhi_rent_control_act__1958_section_14"],
+    "expected_sources": [
+      "delhi_rent_control_act__1958_section_14"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The landlord threatens self-help summary eviction without notice or legal process. In India, landlords cannot forcibly dispossess tenants without due process of law.",
     "note": "Unlawful self-help summary eviction."
@@ -234,7 +277,9 @@
     "category": "rental_eviction",
     "clause_text": "In the event of persistent default of rent for 2 consecutive months, the Landlord may initiate statutory eviction proceedings pursuant to applicable rent control laws.",
     "risk_label": "amber",
-    "expected_sources": ["delhi_rent_control_act__1958_section_14"],
+    "expected_sources": [
+      "delhi_rent_control_act__1958_section_14"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "If you fail to pay rent for 2 months, the landlord can start formal legal eviction under rent control statutes. This outlines statutory remedies.",
     "note": "Statutory eviction for default."
@@ -244,7 +289,9 @@
     "category": "rental_maintenance",
     "clause_text": "The Tenant shall be responsible for routine internal maintenance and minor repairs up to Rs 1,000, while structural repairs remain the responsibility of the Landlord.",
     "risk_label": "green",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You take care of small everyday maintenance under ₹1,000, while major building repairs are the landlord's obligation. This is balanced and standard.",
     "note": "Standard repair division under Section 108 of Transfer of Property Act."
@@ -254,7 +301,9 @@
     "category": "rental_maintenance",
     "clause_text": "The Tenant shall bear 100% of all maintenance costs, structural repairs, roof leakages, and property tax assessments during the tenancy.",
     "risk_label": "red",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You are forced to pay for structural building damage and municipal property taxes that are legally the property owner's obligation. Highly one-sided.",
     "note": "Imposition of structural repair and owner taxes on tenant."
@@ -264,7 +313,9 @@
     "category": "rental_subletting",
     "clause_text": "The Tenant shall not sublet, assign, or transfer possession of the leased premises or any part thereof without prior written consent of the Landlord.",
     "risk_label": "green",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You cannot sublet or rent out rooms to third parties without the landlord's written approval. This is standard in residential leases.",
     "note": "Standard restriction on unauthorized subletting."
@@ -274,7 +325,9 @@
     "category": "rental_inspection",
     "clause_text": "The Landlord may enter and inspect the premises at reasonable daytime hours upon giving at least twenty-four (24) hours prior notice to the Tenant.",
     "risk_label": "green",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The landlord can inspect the property during daytime with at least 24 hours advance notice. This respects tenant privacy.",
     "note": "Inspection with 24-hour advance notice."
@@ -284,7 +337,9 @@
     "category": "rental_inspection",
     "clause_text": "The Landlord reserves the right to enter and inspect the premises at any hour of day or night without prior notice to the Tenant.",
     "risk_label": "red",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The landlord claims the right to enter your home at any time without warning. This breaches the tenant's right to quiet enjoyment and privacy.",
     "note": "Breach of quiet enjoyment and unannounced entry."
@@ -304,7 +359,9 @@
     "category": "rental_restrictions",
     "clause_text": "The premises shall be used exclusively for residential purposes by the Tenant and immediate family, and no commercial business activity shall be operated therefrom.",
     "risk_label": "green",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You can only use the property as a private residence and cannot run a commercial office or shop from it. Standard residential zoning restriction.",
     "note": "Standard residential use restriction."
@@ -314,7 +371,9 @@
     "category": "rental_escalation",
     "clause_text": "Upon renewal after 11 months, the monthly rent shall automatically increase by 5% over the prevailing monthly rate.",
     "risk_label": "green",
-    "expected_sources": ["model_tenancy_act__2021_section_11"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_11"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "If renewed for another term, your rent will increase by 5%. This is a typical and reasonable annual escalation rate.",
     "note": "Standard 5% rent escalation."
@@ -324,7 +383,9 @@
     "category": "rental_escalation",
     "clause_text": "The Landlord may increase the rent by 50% at any time during the tenancy if property market rates in the locality increase.",
     "risk_label": "red",
-    "expected_sources": ["model_tenancy_act__2021_section_11"],
+    "expected_sources": [
+      "model_tenancy_act__2021_section_11"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The landlord reserves arbitrary power to hike rent by 50% midway through the lease. Unilateral massive rent increases conflict with tenancy rent protections.",
     "note": "Arbitrary exorbitant mid-term rent hike."
@@ -334,7 +395,9 @@
     "category": "general_boilerplate",
     "clause_text": "If any provision of this agreement is held invalid or unenforceable by a court of law, the remaining provisions shall continue in full force and effect.",
     "risk_label": "green",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "If a court strikes down any single clause as illegal, the rest of the contract remains valid and binding. Standard severability clause.",
     "note": "Standard boilerplate severability."
@@ -344,7 +407,9 @@
     "category": "general_boilerplate",
     "clause_text": "Neither party shall be liable for failure to perform obligations if prevented by acts of God, war, pandemic, or government lockdown beyond reasonable control.",
     "risk_label": "green",
-    "expected_sources": ["indian_contract_act__1872_section_39"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_39"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "Neither side is held responsible for delays or failure to perform caused by natural disasters, wars, or official emergency lockdowns. Standard force majeure term.",
     "note": "Force majeure and frustration of performance."
@@ -354,7 +419,9 @@
     "category": "general_unilateral",
     "clause_text": "The Employee unconditionally waives all rights to approach any labor court, tribunal, or judicial forum for any claim arising from wrongful termination or unpaid wages.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "This clause attempts to block you from taking legal action in court for unpaid wages or wrongful dismissal. Agreements absolutely barring access to legal tribunals are void in Indian contract law.",
     "note": "Restraint of legal proceedings under Section 28 of Contract Act."
@@ -404,7 +471,9 @@
     "category": "ambiguous",
     "clause_text": "The Employee shall not compete with the Company, provided that this restriction shall not apply to any activity permitted by applicable law.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_27"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_27"
+    ],
     "expected_status": "partially_grounded",
     "expected_explanation": "The clause attempts to restrict competition while adding a circular exception for anything permitted by law. Because Section 27 voids post-job non-competes, this creates ambiguous scope.",
     "note": "Circular carve-out testing calibration on ambiguous clauses."
@@ -414,7 +483,9 @@
     "category": "employment_deduction",
     "clause_text": "The Company shall have the right to set off any unserved notice period days against the Employee's accrued leave balance and final settlement amount.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The company can adjust unserved notice period days against your earned leave encashment and final settlement. Standard settlement offset mechanism.",
     "note": "Leave adjustment against notice period."
@@ -424,7 +495,9 @@
     "category": "rental_lock_in",
     "clause_text": "If the tenant terminates during the 1-year lock-in period, the security deposit of 2 months' rent shall be forfeited as agreed pre-estimated liquidated damages.",
     "risk_label": "amber",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "Leaving during the first year forfeits your 2-month deposit as damages. Under Section 74, deposit forfeiture upon early breach is limited to reasonable compensation for actual vacant periods.",
     "note": "Liquidated damages lock-in deposit forfeiture."
@@ -434,17 +507,22 @@
     "category": "employment_termination",
     "clause_text": "Upon notice of termination, the Company may require the Employee to serve their notice period on garden leave with full salary and benefits but without access to company premises or systems.",
     "risk_label": "green",
-    "expected_sources": ["industrial_employment__standing_orders__act__1946_section_4"],
+    "expected_sources": [
+      "industrial_relations_code__2020_section_29",
+      "industrial_relations_code__2020_section_30"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "During your notice period, the company can ask you to stay home on full pay without working on company systems. Garden leave with full compensation is standard and valid.",
-    "note": "Paid garden leave during notice period."
+    "note": "Paid garden leave during notice period. Standing Orders Act, 1946 repealed by the Industrial Relations Code, 2020 (in force 21 Nov 2025): now IR Code ss.29-30."
   },
   {
     "clause_id": "rental_painting_charge_01",
     "category": "rental_maintenance",
     "clause_text": "Upon vacating, a mandatory deduction of one month's rent shall be made from the security deposit towards painting and deep cleaning charges regardless of premises condition.",
     "risk_label": "amber",
-    "expected_sources": ["transfer_of_property_act__1882_section_108"],
+    "expected_sources": [
+      "transfer_of_property_act__1882_section_108"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "The landlord automatically docks one month's rent for painting when you leave, even if the property is in pristine condition. Automatic arbitrary deductions without proof of damage can be disputed.",
     "note": "Fixed painting deduction regardless of condition."
@@ -454,7 +532,9 @@
     "category": "employment_reimbursement",
     "clause_text": "The Company shall provide a relocation allowance of Rs 1,00,000. If the Employee resigns within 12 months, the relocation allowance must be refunded in full on a pro-rata basis.",
     "risk_label": "green",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You receive ₹1,00,000 for moving expenses, but must return a proportional share if you quit within a year. Pro-rata recovery of actual relocation expenses is fair and legally valid.",
     "note": "Pro-rata relocation reimbursement recovery."
@@ -464,7 +544,9 @@
     "category": "rental_penalty",
     "clause_text": "If rent is not paid by the 5th of the month, the Tenant shall pay a compounding late fee penalty of Rs 1,000 per day for each day of delay.",
     "risk_label": "red",
-    "expected_sources": ["indian_contract_act__1872_section_74"],
+    "expected_sources": [
+      "indian_contract_act__1872_section_74"
+    ],
     "expected_status": "grounded",
     "expected_explanation": "You are charged ₹1,000 every day for late rent. This exorbitant compounding daily fine functions as an unlawful penalty under Section 74 rather than reasonable interest.",
     "note": "Exorbitant daily compounding late fee."

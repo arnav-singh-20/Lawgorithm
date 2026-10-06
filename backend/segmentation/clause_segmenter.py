@@ -40,7 +40,9 @@ def segment_clauses(text: str) -> list[dict]:
     """
     Returns a list of {clause_id, title, text} dicts in document order.
     Content that appears before the first recognized header is kept as
-    a "0" / "PREAMBLE" clause so nothing gets silently dropped.
+    a "0" / "PREAMBLE" clause so nothing gets silently dropped. A signature
+    block ("LANDLORD / Ramesh Kumar", "WITNESSES") is kept too but marked
+    kind="signature" so it isn't analysed as a clause.
     """
     clauses = _segment_lines(text)
     if len(clauses) == 1 and clauses[0]["title"] == "FULL DOCUMENT":
@@ -49,8 +51,25 @@ def segment_clauses(text: str) -> list[dict]:
         if restructured != text:
             inline = _segment_lines(restructured)
             if len(inline) > 1:
-                return inline
+                clauses = inline
+    for clause in clauses:
+        if _is_signature_block(clause):
+            clause["kind"] = "signature"
     return clauses
+
+
+# All-caps lines that start a signature block, not a clause. Seen live: the
+# "LANDLORD" above a signature became a 14th "clause" and was analysed.
+_SIGNATURE_TITLES = re.compile(
+    r"^(?:(?:THE\s+)?(?:LANDLORD|TENANT|LESSOR|LESSEE|LICENSOR|LICENSEE|OWNER|EMPLOYER|EMPLOYEE|COMPANY|"
+    r"WITNESS(?:ES)?|SIGNATURES?|SIGNED|SIGNATORIES|IN WITNESS WHEREOF|DATE|PLACE|ACCEPTED(?: BY)?|"
+    r"FOR AND ON BEHALF OF.*)[\s:.,/&]*)+$"
+)
+
+
+def _is_signature_block(clause: dict) -> bool:
+    title = (clause.get("title") or "").strip().upper()
+    return bool(_SIGNATURE_TITLES.match(title)) and len(clause.get("text") or "") < 400
 
 
 def _break_inline_headers(text: str) -> str:

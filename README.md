@@ -5,6 +5,37 @@ agreements only.** Upload one, get every clause explained in plain
 language, grounded in real Indian statutory provisions, and tagged
 Red/Amber/Green.
 
+## Newest: decisions, human-in-the-loop review, payments
+
+**A clear decision for every clause** (`backend/risk/decision.py`): ✅ no lawyer
+needed · 🤝 ask for a change · ⚖️ talk to a lawyer · 🧑‍⚖️ needs a human expert
+check (when the AI can't confirm its own answer). Serious clauses read: *"This
+clause is important. If you don't fix it, [consequence]. For more detail, talk
+to a lawyer."* -- the consequence is written by the AI per clause.
+
+**Expert review queue** (`backend/expert_review/`, reviewer page at `/#/review`):
+the person sends only the uncertain clauses, with consent; a reviewer decides and
+the person sees it on a private link. Kept in a private Hugging Face dataset,
+deleted 7 days after review (30 days max). The owner adds reviewers from the
+page itself (invite link; only a hash of each key is stored).
+
+**Payments** (`backend/payments/razorpay.py`): Rs 10 per contract via Razorpay;
+samples free; verified server-side against Razorpay and marked used on the
+payment itself; automatic refund if a check fails. Off until
+`RAZORPAY_KEY_ID`/`RAZORPAY_KEY_SECRET` are set (test keys work before KYC).
+Pricing, Terms, Refund and Contact pages are at `/#/pricing`, `/#/terms`,
+`/#/refunds`, `/#/contact` (the contact form doubles as the DPDP grievance channel).
+
+**Cheaper, sturdier AI use**: one request per clause with the law looked up first
+(`AGENT_MODE=prefetch`, ~4x fewer tokens), automatic fallback between Groq models
+when one's daily allowance runs out, embeddings pinned to CPU (ZeroGPU returned
+zero vectors), and 29 law sections recovered (Contract Act ss.13-18, 31, 124...)
+plus the Kerala rent Act.
+
+Settings: see `.env.example`. Accuracy run: `python -m scripts.run_accuracy_eval`
+(uses about a day of the free AI allowance). A plain-language walkthrough of every
+file is in `Lawgorithm_Code_Guide.pdf`.
+
 ## Latest round: dataset, local models, remaining phases
 
 ### Running it (no API key needed)
@@ -61,7 +92,7 @@ sets the ReAct search limit (default 3).
 
 ### Law library (`data/statutes/`, built by `scripts/build_statute_library.py`)
 
-2,210 sections from 25 Acts plus the Model Tenancy Act. Each section links to
+2,273 sections from 26 Acts plus the Model Tenancy Act. Each section links to
 its official India Code PDF (`official_source`).
 
 - **Central:** Contract Act, Transfer of Property Act, Registration, Stamp,

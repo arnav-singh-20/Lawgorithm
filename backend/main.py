@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.database.db import init_db
 from backend.rag.vector_store import LegalVectorStore
 from backend.rag.ingest_laws import build_index
-from backend.api import routes_analysis, routes_documents, routes_expert, routes_verification
+from backend.api import routes_analysis, routes_contact, routes_documents, routes_expert, routes_payments, routes_verification
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -30,6 +30,8 @@ app.include_router(routes_documents.router, tags=["documents"])
 app.include_router(routes_analysis.router, tags=["analysis"])
 app.include_router(routes_verification.router, tags=["verification"])
 app.include_router(routes_expert.router, tags=["expert review"])
+app.include_router(routes_payments.router, tags=["payments"])
+app.include_router(routes_contact.router, tags=["contact"])
 
 
 from pathlib import Path

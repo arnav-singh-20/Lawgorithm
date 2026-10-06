@@ -183,3 +183,19 @@ def test_duplicate_and_empty_names_are_refused(api):
     assert api.post("/expert-review/reviewers", json={"name": "Priya"}, headers=owner).status_code == 201
     assert api.post("/expert-review/reviewers", json={"name": "priya"}, headers=owner).status_code == 400
     assert api.post("/expert-review/reviewers", json={"name": "   "}, headers=owner).status_code == 400
+
+
+# ── contact / grievances (api/routes_contact.py) ──
+
+def test_contact_message_reaches_only_the_owner(api):
+    assert api.post("/contact", json={"topic": "grievance", "message": "Please delete my data.", "reply_to": "me@example.com"}).status_code == 201
+    assert api.post("/contact", json={"topic": "spam", "message": "hello there"}).status_code == 400
+    assert api.post("/contact", json={"topic": "question", "message": "hi", "website": "bot"}).json() == {"received": True}
+    owner = {"X-Reviewer-Key": KEY}
+    msgs = api.get("/contact/messages", headers=owner).json()["messages"]
+    assert [(m["topic"], m["reply_to"]) for m in msgs] == [("grievance", "me@example.com")]   # the bot's was dropped
+    guest_key = api.post("/expert-review/reviewers", json={"name": "Priya"}, headers=owner).json()["key"]
+    assert api.get("/contact/messages", headers={"X-Reviewer-Key": guest_key}).status_code == 403
+    assert api.get("/contact/messages").status_code == 401
+    assert api.delete(f"/contact/messages/{msgs[0]['id']}", headers=owner).json() == {"deleted": True}
+    assert api.get("/contact/messages", headers=owner).json()["messages"] == []

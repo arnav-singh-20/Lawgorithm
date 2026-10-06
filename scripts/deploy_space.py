@@ -87,6 +87,7 @@ def publish(bundle: Path) -> str:
     if settings.get("PRIVACY_CONTACT"):
         variables["PRIVACY_CONTACT"] = settings["PRIVACY_CONTACT"]
     variables.update(_expert_review_settings(api, user, repo_id, settings))
+    variables.update(_payment_settings(api, repo_id, settings))
     for key, value in variables.items():
         api.add_space_variable(repo_id, key, value)
 
@@ -96,6 +97,30 @@ def publish(bundle: Path) -> str:
     print(f"Published: https://huggingface.co/spaces/{repo_id}")
     print(f"Live site (after the build finishes, ~5-10 min): {url}")
     return url
+
+
+def _payment_settings(api, space_id: str, settings: dict) -> dict:
+    """Razorpay keys as private secrets; prices/business details as variables. No keys = free."""
+    key_id = (settings.get("RAZORPAY_KEY_ID") or "").strip()
+    secret = (settings.get("RAZORPAY_KEY_SECRET") or "").strip()
+    if not (key_id and secret):
+        for name in ("RAZORPAY_KEY_ID", "RAZORPAY_KEY_SECRET"):
+            try:
+                api.delete_space_secret(space_id, name)
+            except Exception:
+                pass
+        print("Payments: OFF (no RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET in .env) -- everything is free.")
+        out = {}
+    else:
+        api.add_space_secret(space_id, "RAZORPAY_KEY_ID", key_id)
+        api.add_space_secret(space_id, "RAZORPAY_KEY_SECRET", secret)          # never printed
+        mode = "TEST mode" if key_id.startswith("rzp_test_") else "LIVE"
+        print(f"Payments: ON ({mode}) -- Rs {int(settings.get('PRICE_ANALYSIS_PAISE') or 1000) // 100} per contract")
+        out = {}
+    for name in ("PRICE_ANALYSIS_PAISE", "EXPERT_REVIEW_PRICE_PAISE", "BUSINESS_NAME", "CONTACT_EMAIL"):
+        if (settings.get(name) or "").strip():
+            out[name] = settings[name].strip()
+    return out
 
 
 def _expert_review_settings(api, user: str, space_id: str, settings: dict) -> dict:

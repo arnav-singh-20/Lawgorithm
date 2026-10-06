@@ -62,7 +62,9 @@ ACTS = {
 # by amendment, which carry a footnote marker and are often NOT bold:
 # "1[106. Duration of certain leases...". The table of contents has neither.
 SECTION_START = re.compile(
-    r"^(?:\*\*\s*(?:\d+\s*\[|\[)?|\d+\s*\[)\s*(\d{1,3}[A-Z]{0,3})\s*\.\s*(?=[A-Z\[*])", re.MULTILINE)
+    # titles may open with a quotation mark: '13. “Consent” defined.' (missing
+    # them dropped ICA ss.13-18, 31, 124 -- the definitions -- from the library)
+    r"^(?:\*\*\s*(?:\d+\s*\[|\[)?|\d+\s*\[)\s*(\d{1,3}[A-Z]{0,3})\s*\.\s*(?=[A-Z\[*“\"‘'])", re.MULTILINE)
 FOOTNOTE_JUNK = re.compile(r"^\s*\d*\*?\s*(?:-\s*){2,}\*?\s*\.?\s*$", re.MULTILINE)
 
 
@@ -151,7 +153,24 @@ STATE_PDF_ACTS = {
     "data/sources/pdfs/up_urban_tenancy_2021.pdf": ("Uttar Pradesh Regulation of Urban Premises Tenancy Act, 2021", "Uttar Pradesh",
         "https://www.indiacode.nic.in/bitstream/123456789/21157/1/english_16_of_2021.pdf",
         "https://prsindia.org/files/bills_acts/acts_states/uttar-pradesh/2021/Act%20No%2016%20of%202021%20UP.pdf"),
+    "data/sources/pdfs/kerala_rent_1965.pdf": ("Kerala Buildings (Lease and Rent Control) Act, 1965", "Kerala",
+        "https://www.indiacode.nic.in/handle/123456789/20372",
+        "https://prsindia.org/files/bills_acts/acts_states/kerala/1965/1965KERALA2.pdf",
+        # stop at the Schedule (a numbered list of towns) or the appended amendment Acts
+        {"stop_at": r"\n\s*(?:THE\s+)?SCHEDULE\s*\n|(?i:Lease\s+and\s+Rent\s+Control\s*\)?\s*Amendment\s+Act)"},
+        # the PRS copy is the Act as enacted; the 1966/1972/1974 amendments are
+        # appended, not merged, so the text may be out of date -> unverified
+        {"verified": False, "note": "as enacted in 1965; later amendments (1966, 1972, 1974) not consolidated"}),
 }
+
+# Not included yet, needing a clean source:
+#   Haryana Urban (Control of Rent and Eviction) Act, 1973 -- the PRS copy is a
+#     poor scan: footnotes read as section starts and s.13 (eviction) is
+#     unreadable, so section numbers can't be attributed reliably.
+#   Telangana / AP Buildings (Lease, Rent and Eviction) Control Act, 1960 and
+#     Rajasthan Rent Control Act, 2001 -- only on India Code (not scraped).
+#   Gujarat -- its 1947 rent Act was revived only until 31 Mar 2026; current
+#     status unconfirmed, so not added rather than risk citing lapsed law.
 
 # State Acts available in the dataset's state splits.
 STATE_DATASET_ACTS = {
@@ -161,12 +180,16 @@ STATE_DATASET_ACTS = {
 }
 
 
-def pdf_text(path: str) -> str:
-    """Text layer if there is one; otherwise OCR (scanned Gazettes), cached next to the PDF."""
+def pdf_text(path: str, force_ocr: bool = False) -> str:
+    """
+    Text layer if there is one; otherwise OCR (scanned Gazettes), cached next
+    to the PDF. force_ocr: the PDF HAS a text layer, but it's an old, garbled
+    OCR ("Evicrion of tcnanls") -- a fresh Tesseract pass reads it far better.
+    """
     from pypdf import PdfReader
 
     text = "\n".join((page.extract_text() or "") for page in PdfReader(path).pages)
-    if len(text.strip()) > 2000:
+    if len(text.strip()) > 2000 and not force_ocr:
         return text
     cache = Path(path).with_suffix(".ocr.txt")
     if cache.exists():
@@ -180,17 +203,25 @@ def pdf_text(path: str) -> str:
     return text
 
 
-def parse_gazette_pdf(path: str) -> list[dict]:
+def parse_gazette_pdf(path: str, force_ocr: bool = False, stop_at: str | None = None) -> list[dict]:
     """
     Gazette layout: titles only in the ARRANGEMENT OF SECTIONS, bodies start
     with a bare "70. " at the beginning of a line. Accept a body start only
     when its number follows the previous one (numbered lists inside a
     section and schedule items would otherwise split sections).
     """
-    text = pdf_text(path)
+    text = pdf_text(path, force_ocr=force_ocr)
     ocr = Path(path).with_suffix(".ocr.txt").exists()
+    if stop_at:
+        # e.g. PRS copies with the later amendment Acts appended, which
+        # re-use section numbers 1, 2, 3...: parse the principal Act only
+        cut = re.search(stop_at, text[text.find("may be called") + 20:])
+        if cut:
+            text = text[: text.find("may be called") + 20 + cut.start()]
     body_at = text.find("may be called")
-    body_at = text.rfind("\n1.", 0, body_at) if body_at > 0 else 0
+    # the line holding section 1 -- the number may be indented ("   1. Short title")
+    ones = [m.start() for m in re.finditer(r"\n[^\S\n]*1\s*[.,]", text[:body_at])] if body_at > 0 else []
+    body_at = ones[-1] if ones else 0
     toc, body = text[:body_at], text[body_at:]
 
     # entries are sometimes glued together: "8. Rent payable.9. Revision of rent."
@@ -267,16 +298,20 @@ def build() -> dict:
         statutes.append({"law": law, "sections": sections})
         report[law] = {"sections": len(sections)}
 
-    for path, (law, state, official, fetched_from) in STATE_PDF_ACTS.items():
+    for path, (law, state, official, fetched_from, *options) in STATE_PDF_ACTS.items():
         if not Path(path).exists():
             report[law] = "PDF not downloaded"
             continue
         ocr = Path(path).with_suffix(".ocr.txt")
-        sections = parse_gazette_pdf(path)
+        parse_options = options[0] if options else {}
+        source = options[1] if len(options) > 1 else {}
+        sections = parse_gazette_pdf(path, **parse_options)
         for s in sections:
             s.update({"domain": "rental", "jurisdiction": state, "topics": ["rent", "tenancy", "eviction"],
-                      "verified": not ocr.exists(), "source_type": "statute", "official_source": official,
-                      "source_version": ("OCR of scanned Gazette via " if ocr.exists() else "Gazette text via ") + fetched_from,
+                      "verified": source.get("verified", not ocr.exists()), "source_type": "statute",
+                      "official_source": official,
+                      "source_version": ("OCR of scanned Gazette via " if ocr.exists() else "Gazette text via ") + fetched_from
+                                        + (f" ({source['note']})" if source.get("note") else ""),
                       "last_verified": today})
         statutes.append({"law": law, "sections": sections})
         report[law] = {"sections": len(sections), "ocr": ocr.exists()}

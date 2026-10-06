@@ -1019,7 +1019,7 @@ html:not([lang="en"]) .progress-current {
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
   .marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
-  .marquee-track span:nth-child(n+17) { display: none; }   /* the copy only exists for the seamless loop */
+  .marquee-track span:nth-child(n+18) { display: none; }   /* the copy only exists for the seamless loop */
   .case-pile .stamp-pending, .finale-stamp .stamp-resolved { opacity: 1; transform: rotate(-12deg); animation: none !important; }
   .finale-stamp .stamp-pending { display: none; }
   .impact-punch { background-size: 100% 100%; }
@@ -1177,3 +1177,18 @@ html:not([lang="en"]) .progress-current {
 .invite-box { display: grid; gap: 10px; padding: 14px; border-radius: 14px; background: rgba(31, 138, 82, .10); border: 1px solid rgba(31, 138, 82, .35); }
 .invite-link { font-family: var(--font-mono, monospace); font-size: 13px; }
 .invite-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* payments & info pages */
+.price-note { margin-top: 10px; font-size: 13px; color: var(--text-soft); }
+.price-note a { color: var(--text); font-weight: 600; }
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
+.price-card { display: grid; gap: 6px; padding: 20px; border-radius: 20px; border: 1px solid var(--line); background: var(--surface); }
+.price-amount { font-family: var(--font-display); font-size: 34px; line-height: 1.1; }
+.price-card p { color: var(--text-soft); font-size: 14px; }
+.info-body { margin-top: 18px; display: grid; gap: 14px; max-width: 760px; }
+.contact-form { border-top: 0; padding-top: 0; max-width: 560px; }
+.contact-form select { height: 46px; }
+.contact-sent { font-weight: 600; color: var(--c-green, #1f8a52); }
+.message-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); }
+.message-text { white-space: pre-wrap; margin: 4px 0; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

@@ -23,6 +23,7 @@ from pydantic import BaseModel
 
 from backend.config import STORE_ANALYSES
 from backend.expert_review import service
+from backend.payments import razorpay
 from backend.services import jobs
 
 router = APIRouter(prefix="/expert-review")
@@ -32,6 +33,9 @@ class CreateRequest(BaseModel):
     document_id: str
     clause_row_ids: list[str]
     consent: bool = False
+    razorpay_order_id: str | None = None
+    razorpay_payment_id: str | None = None
+    razorpay_signature: str | None = None
 
 
 class AddReviewerRequest(BaseModel):
@@ -73,7 +77,19 @@ def _document(document_id: str) -> dict:
 
 @router.post("", status_code=201)
 def create(request: CreateRequest):
-    return _call(service.create_ticket, _document(request.document_id), request.clause_row_ids, request.consent)
+    document = _document(request.document_id)
+    paid = None
+    if razorpay.price("expert") > 0 and request.consent and not service.has_ticket(request.document_id):
+        try:
+            paid = razorpay.redeem("expert", request.razorpay_order_id, request.razorpay_payment_id,
+                                   request.razorpay_signature, use_ref=f"review:{request.document_id[:12]}")
+        except razorpay.PaymentError as exc:
+            raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+    try:
+        return service.create_ticket(document, request.clause_row_ids, request.consent)
+    except service.ReviewError as exc:
+        razorpay.refund(paid, "expert check could not be created")
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
 
 
 @router.get("/reviewer/me")

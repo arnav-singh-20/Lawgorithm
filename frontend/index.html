@@ -162,7 +162,7 @@
 
           <div class="upload-actions">
             <button class="btn btn-ink" id="analyzeBtn" disabled>
-              <span data-i18n="upload.cta">Decode my contract</span>
+              <span id="analyzeLabel">Decode my contract</span>
               <span class="btn-arrow" aria-hidden="true">→</span>
             </button>
             <label class="btn btn-outline" for="cameraInput">
@@ -170,6 +170,8 @@
               <span aria-hidden="true">📷</span> <span data-i18n="upload.camera">Take a photo</span>
             </label>
           </div>
+
+          <p class="price-note" id="priceNote" hidden></p>
 
           <div class="sample-row">
             <span class="mono-label" data-i18n="upload.noFile">No contract handy?</span>
@@ -268,15 +270,15 @@
           <p class="section-sub" data-i18n="library.sub">Every legal point Lawgorithm makes must cite a real section from this library — or it’s flagged for a human check.</p>
         </div>
         <div class="library-stats">
-          <div><strong class="count-up" data-count-to="2210">2,210</strong><span data-i18n="library.n1">sections of law</span></div>
-          <div><strong class="count-up" data-count-to="25">25</strong><span data-i18n="library.n2">Acts, central &amp; state</span></div>
+          <div><strong class="count-up" data-count-to="2273">2,273</strong><span data-i18n="library.n1">sections of law</span></div>
+          <div><strong class="count-up" data-count-to="26">26</strong><span data-i18n="library.n2">Acts, central &amp; state</span></div>
           <div><strong class="count-up" data-count-to="7">7</strong><span data-i18n="library.n3">languages</span></div>
           <div><strong>0</strong><span data-i18n="library.n4">contracts stored</span></div>
         </div>
         <div class="marquee" aria-hidden="true">
           <div class="marquee-track">
-            <span>Indian Contract Act, 1872</span><span>Transfer of Property Act, 1882</span><span>Code on Wages, 2019</span><span>Industrial Relations Code, 2020</span><span>Code on Social Security, 2020</span><span>OSH Code, 2020</span><span>Karnataka Rent Act, 1999</span><span>Tamil Nadu Tenancy Act, 2017</span><span>Maharashtra Rent Control Act, 1999</span><span>West Bengal Premises Tenancy Act, 1997</span><span>Delhi Rent Control Act, 1958</span><span>Registration Act, 1908</span><span>Specific Relief Act, 1963</span><span>Arbitration Act, 1996</span><span>POSH Act, 2013</span><span>Model Tenancy Act, 2021</span>
-            <span>Indian Contract Act, 1872</span><span>Transfer of Property Act, 1882</span><span>Code on Wages, 2019</span><span>Industrial Relations Code, 2020</span><span>Code on Social Security, 2020</span><span>OSH Code, 2020</span><span>Karnataka Rent Act, 1999</span><span>Tamil Nadu Tenancy Act, 2017</span><span>Maharashtra Rent Control Act, 1999</span><span>West Bengal Premises Tenancy Act, 1997</span><span>Delhi Rent Control Act, 1958</span><span>Registration Act, 1908</span><span>Specific Relief Act, 1963</span><span>Arbitration Act, 1996</span><span>POSH Act, 2013</span><span>Model Tenancy Act, 2021</span>
+            <span>Indian Contract Act, 1872</span><span>Transfer of Property Act, 1882</span><span>Code on Wages, 2019</span><span>Industrial Relations Code, 2020</span><span>Code on Social Security, 2020</span><span>OSH Code, 2020</span><span>Karnataka Rent Act, 1999</span><span>Tamil Nadu Tenancy Act, 2017</span><span>Maharashtra Rent Control Act, 1999</span><span>West Bengal Premises Tenancy Act, 1997</span><span>Kerala Rent Control Act, 1965</span><span>Delhi Rent Control Act, 1958</span><span>Registration Act, 1908</span><span>Specific Relief Act, 1963</span><span>Arbitration Act, 1996</span><span>POSH Act, 2013</span><span>Model Tenancy Act, 2021</span>
+            <span>Indian Contract Act, 1872</span><span>Transfer of Property Act, 1882</span><span>Code on Wages, 2019</span><span>Industrial Relations Code, 2020</span><span>Code on Social Security, 2020</span><span>OSH Code, 2020</span><span>Karnataka Rent Act, 1999</span><span>Tamil Nadu Tenancy Act, 2017</span><span>Maharashtra Rent Control Act, 1999</span><span>West Bengal Premises Tenancy Act, 1997</span><span>Kerala Rent Control Act, 1965</span><span>Delhi Rent Control Act, 1958</span><span>Registration Act, 1908</span><span>Specific Relief Act, 1963</span><span>Arbitration Act, 1996</span><span>POSH Act, 2013</span><span>Model Tenancy Act, 2021</span>
           </div>
         </div>
       </section>
@@ -413,6 +415,17 @@
       <div class="expert-list" id="expertList"></div>
     </section>
 
+    <!-- ═════════ PRICING / TERMS / REFUNDS / CONTACT ═════════ -->
+    <section class="view" id="view-info" data-view="info" hidden>
+      <div class="privacy-page info-page">
+        <button class="back-link" data-view-link="home"><span aria-hidden="true">←</span> <span data-i18n="privacy.back">Back</span></button>
+        <p class="eyebrow"><span class="eyebrow-dot"></span><span id="infoEyebrow"></span></p>
+        <h1 class="display display-sm" id="infoTitle"></h1>
+        <p class="translation-note" id="infoEnglishNote" hidden></p>
+        <div class="info-body" id="infoBody"></div>
+      </div>
+    </section>
+
     <!-- ═════════ PRIVACY NOTICE ═════════ -->
     <section class="view" id="view-privacy" data-view="privacy" hidden>
       <div class="privacy-page">
@@ -445,6 +458,10 @@
         <a href="#how" data-scroll-to="how" data-i18n="nav.how">How it works</a>
         <a href="#game" data-scroll-to="game" data-i18n="footer.game">Spot the red flag</a>
         <a href="#/privacy" data-i18n="footer.privacy">Privacy</a>
+        <a href="#/pricing" id="footerPricing" data-i18n="footer.pricing" hidden>Pricing</a>
+        <a href="#/terms" data-i18n="footer.terms">Terms</a>
+        <a href="#/refunds" id="footerRefunds" data-i18n="footer.refunds" hidden>Refunds</a>
+        <a href="#/contact" data-i18n="footer.contact">Contact</a>
         <a href="#/review" id="footerReviewLink" data-i18n="footer.reviewers" hidden>Reviewer sign-in</a>
       </nav>
     </div>

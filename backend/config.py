@@ -106,6 +106,20 @@ EXPERT_REVIEW_MAX_DAYS = int(os.environ.get("EXPERT_REVIEW_MAX_DAYS", "30"))
 REVIEWER_KIND = os.environ.get("REVIEWER_KIND", "team").strip().lower()
 FREE_LEGAL_AID = "15100"   # NALSA national legal aid helpline, toll-free, 24x7
 
+# --- Payments (Razorpay) ---
+# Off (everything free) until both keys are set. Test keys (rzp_test_...)
+# work before KYC; switch to live keys after Razorpay activates the account.
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "").strip()
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET", "").strip()
+PRICE_ANALYSIS_PAISE = int(os.environ.get("PRICE_ANALYSIS_PAISE", "1000"))        # Rs 10 per contract
+# Human expert check: free while the reviewers are the Lawgorithm team.
+# Only enrolled advocates may practise law in India (Advocates Act, 1961,
+# s.33), so charge for it (e.g. 500 = Rs 5) once a lawyer reviews.
+EXPERT_REVIEW_PRICE_PAISE = int(os.environ.get("EXPERT_REVIEW_PRICE_PAISE", "0"))
+# Public business contact for the Contact / Terms pages (Razorpay needs one).
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "").strip()
+BUSINESS_NAME = os.environ.get("BUSINESS_NAME", "Lawgorithm").strip()
+
 # --- Database ---
 DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'lawgorithm.db'}")
 
