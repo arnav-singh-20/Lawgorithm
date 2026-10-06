@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lawgorithm — Your Rights in Your Language</title>
+  <meta name="description" content="Your Rights in Your Language. Upload a rental or job contract. Get every clause in plain words, colour-coded by risk, checked against Indian law." />
+  <meta name="theme-color" content="#fff9f1" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 144 144'%3E%3Crect x='-12' y='-12' width='144' height='144' rx='32' fill='%23F7F4EE'/%3E%3Cg stroke='%231B1F3B' stroke-width='7' stroke-linecap='round' fill='none'%3E%3Cline x1='60' y1='30' x2='60' y2='98'/%3E%3Cline x1='42' y1='100' x2='78' y2='100'/%3E%3Cline x1='24' y1='42' x2='96' y2='42'/%3E%3Cline x1='24' y1='42' x2='24' y2='62'/%3E%3Cline x1='96' y1='42' x2='96' y2='62'/%3E%3C/g%3E%3Ccircle cx='60' cy='20' r='9' fill='%231B1F3B'/%3E%3Cpath d='M8 64 A16 16 0 0 0 40 64 Z' fill='%231B1F3B'/%3E%3Cpath d='M80 64 A16 16 0 0 0 112 64 Z' fill='%23E8962E'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+
+  <!-- ═════════ NAV ═════════ -->
+  <header class="nav" id="nav">
+    <a class="wordmark" href="#" data-view-link="home" aria-label="Lawgorithm home">
+      <span class="wordmark-mark" aria-hidden="true">
+        <!-- primary logo: "Primary logo — light-html/Main.dc.html" -->
+        <svg viewBox="0 0 120 120">
+          <g class="logo-ink-stroke" stroke-width="7" stroke-linecap="round" fill="none">
+            <line x1="60" y1="30" x2="60" y2="98"/><line x1="42" y1="100" x2="78" y2="100"/>
+            <line x1="24" y1="42" x2="96" y2="42"/><line x1="24" y1="42" x2="24" y2="62"/><line x1="96" y1="42" x2="96" y2="62"/>
+          </g>
+          <circle class="logo-ink" cx="60" cy="20" r="9"/>
+          <path class="logo-ink" d="M8 64 A16 16 0 0 0 40 64 Z"/>
+          <path class="logo-accent" d="M80 64 A16 16 0 0 0 112 64 Z"/>
+        </svg>
+      </span>
+      <span class="wordmark-text"><b>law</b>gorithm</span>
+    </a>
+
+    <nav class="nav-pill" aria-label="Main">
+      <button class="nav-link is-active" data-view-link="home" data-i18n="nav.analyse">Analyse</button>
+      <button class="nav-link" data-scroll-to="how" data-i18n="nav.how">How it works</button>
+      <button class="nav-link" data-view-link="review">
+        <span data-i18n="nav.review">Reviewer desk</span>
+        <span class="nav-count" id="pendingCount" hidden>0</span>
+      </button>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="lang-button" id="langButton" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        <span id="langButtonLabel">English</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" data-i18n-attr="aria-label:a11y.theme">
+        <span class="theme-knob" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ═════════ HOME ═════════ -->
+    <section class="view" id="view-home" data-view="home" hidden>
+      <section class="impact" id="impact" aria-labelledby="impactTitle">
+        <div class="impact-inner">
+          <div class="impact-copy">
+            <p class="eyebrow on-dark"><span class="eyebrow-dot pulse"></span><span data-i18n="impact.eyebrow">India’s courts, right now</span></p>
+            <h1 class="impact-number" id="impactTitle">
+              <span class="count-up" data-count-to="58600000">5,86,00,000</span>
+              <span class="impact-number-label" data-i18n="impact.countLabel">cases are waiting in Indian courts.</span>
+            </h1>
+            <p class="impact-line" data-i18n="impact.line1">The average case takes about 9 years to settle. One in ten has waited more than a decade.</p>
+            <p class="impact-line reveal-line">
+              <span data-i18n="impact.line2">So many of them begin the same way —</span>
+              <strong class="impact-punch" data-i18n="impact.punch">with a clause nobody read.</strong>
+            </p>
+            <div class="impact-actions">
+              <a class="btn btn-cream" href="#start" data-scroll-to="start"><span data-i18n="impact.cta">Read yours before you sign</span> <span class="btn-arrow" aria-hidden="true">→</span></a>
+              <a class="btn btn-ghost-dark" href="#game" data-scroll-to="game"><span aria-hidden="true">🎯</span> <span data-i18n="impact.cta2">Play: spot the red flag</span></a>
+            </div>
+            <dl class="impact-stats">
+              <div><dt>1.12 <span data-i18n="impact.crore">crore</span></dt><dd data-i18n="impact.stat1">civil cases pending in district courts</dd></div>
+              <div><dt>1 / 10</dt><dd data-i18n="impact.stat2">district-court cases older than 10 years</dd></div>
+              <div><dt>~9 <span data-i18n="impact.yrs">yrs</span></dt><dd data-i18n="impact.stat3">average time to settle a case</dd></div>
+            </dl>
+            <p class="impact-source">
+              <span data-i18n="impact.source">Sources:</span>
+              <a href="https://njdg.ecourts.gov.in/" target="_blank" rel="noopener noreferrer">National Judicial Data Grid (Sept 2026)</a> ·
+              <a href="https://www.dataforindia.com/pendency/" target="_blank" rel="noopener noreferrer">Data For India</a> ·
+              <a href="https://blogs.ecourtsindia.com/2026/04/27/the-indian-disposal-time-index-2026/" target="_blank" rel="noopener noreferrer">DAKSH / eCourtsIndia</a>
+            </p>
+          </div>
+          <div class="case-pile" aria-hidden="true">
+            <div class="case-file f1"><span class="case-tab">CS 1142/2019</span><span class="case-line"></span><span class="case-line short"></span><span class="case-line"></span></div>
+            <div class="case-file f2"><span class="case-tab">RC 87/2016</span><span class="case-line"></span><span class="case-line"></span><span class="case-line short"></span></div>
+            <div class="case-file f3"><span class="case-tab">OS 2231/2014</span><span class="case-line short"></span><span class="case-line"></span><span class="case-line"></span>
+              <span class="case-clause">“…the Tenant shall remain liable for rent for the entire lock-in period…”</span>
+            </div>
+            <span class="stamp stamp-pending" data-i18n="impact.stamp">PENDING</span>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#start" data-scroll-to="start" aria-label="Scroll down"><span></span></a>
+      </section>
+
+      <div class="hero" id="start">
+        <div class="hero-copy">
+          <p class="hero-tagline"><span class="eyebrow-dot"></span><span data-i18n="tagline">Your Rights in Your Language.</span></p>
+          <h1 class="display">
+            <span data-i18n="hero.title.a">Know what you’re</span>
+            <em class="display-em"><span data-i18n="hero.title.b">signing.</span>
+              <svg class="scribble" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M3 15c40-9 80-11 120-6s70 7 110-1c25-5 45-6 64-2"/></svg>
+            </em>
+          </h1>
+          <p class="lede" data-i18n="hero.lede">Upload a rental or job contract — a PDF or just a photo. Get every clause in plain words, colour-coded by risk, with the Indian law behind it.</p>
+
+          <ul class="trust-pills" aria-label="Highlights">
+            <li><span class="pill-dot red"></span><span data-i18n="hero.pill.red">Red flags</span></li>
+            <li><span class="pill-dot amber"></span><span data-i18n="hero.pill.amber">Heads-ups</span></li>
+            <li><span class="pill-dot green"></span><span data-i18n="hero.pill.green">All-goods</span></li>
+          </ul>
+
+          <dl class="hero-meta">
+            <div><dt data-i18n="hero.meta.reads">Reads</dt><dd data-i18n="hero.meta.readsVal">PDF · Photo · DOCX</dd></div>
+            <div><dt data-i18n="hero.meta.checks">Checks</dt><dd data-i18n="hero.meta.checksVal">Every claim vs. Indian law</dd></div>
+            <div><dt data-i18n="hero.meta.speaks">Speaks</dt><dd data-i18n="hero.meta.speaksVal">7 languages</dd></div>
+          </dl>
+        </div>
+
+        <!-- Upload card -->
+        <div class="upload-card" id="uploadCard">
+          <div class="upload-card-head">
+            <span class="mono-label" data-i18n="upload.step">01 / Upload</span>
+            <div class="segmented" role="radiogroup" aria-label="Document type" data-i18n-attr="aria-label:upload.typeLabel">
+              <button role="radio" aria-checked="true" class="seg is-active" data-doc-type="rental" data-i18n="upload.rental">Rental</button>
+              <button role="radio" aria-checked="false" class="seg" data-doc-type="employment" data-i18n="upload.job">Job</button>
+            </div>
+          </div>
+
+          <label class="dropzone" id="dropzone" for="fileInput">
+            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.docx,.txt,application/pdf,image/*" hidden />
+            <div class="paper" aria-hidden="true">
+              <span class="paper-line"></span>
+              <span class="paper-line hl-green"></span>
+              <span class="paper-line short"></span>
+              <span class="paper-line hl-red"></span>
+              <span class="paper-line"></span>
+              <span class="paper-line short hl-amber"></span>
+              <span class="paper-line"></span>
+              <span class="paper-tag tag-red">🚩</span>
+              <span class="paper-tag tag-amber">⚠️</span>
+            </div>
+            <span class="drop-title" data-i18n="upload.drop">Drop your contract here</span>
+            <span class="drop-sub" data-i18n="upload.dropSub">or click to browse · PDF, JPG, PNG, DOCX</span>
+          </label>
+
+          <div class="file-chip" id="fileChip" hidden>
+            <span class="file-icon" aria-hidden="true">📄</span>
+            <span class="file-name" id="fileName"></span>
+            <button class="icon-button" id="clearFile" aria-label="Remove file" data-i18n-attr="aria-label:upload.remove">✕</button>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" id="consentBox" />
+            <span><span data-i18n="consent.label">I agree to my document being processed as described in the</span>
+              <a href="#/privacy" data-i18n="consent.link">privacy notice</a><span data-i18n="consent.rights">, and I have the right to share it.</span></span>
+          </label>
+
+          <div class="upload-actions">
+            <button class="btn btn-ink" id="analyzeBtn" disabled>
+              <span data-i18n="upload.cta">Decode my contract</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+            <label class="btn btn-outline" for="cameraInput">
+              <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden />
+              <span aria-hidden="true">📷</span> <span data-i18n="upload.camera">Take a photo</span>
+            </label>
+          </div>
+
+          <div class="sample-row">
+            <span class="mono-label" data-i18n="upload.noFile">No contract handy?</span>
+            <button class="link-button" data-sample="rental" data-i18n="upload.sampleRental">Try a sample lease</button>
+            <span aria-hidden="true">·</span>
+            <button class="link-button" data-sample="employment" data-i18n="upload.sampleJob">sample job offer</button>
+          </div>
+          <p class="my-checks" id="myChecks" hidden></p>
+
+          <p class="error-banner" id="uploadError" role="alert" hidden></p>
+        </div>
+      </div>
+
+      <!-- Before / after -->
+      <section class="transform" aria-labelledby="transformTitle">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="transform.eyebrow">Before → after</span></p>
+          <h2 class="section-title" id="transformTitle" data-i18n="transform.title">Legal language in. Plain words out.</h2>
+        </div>
+        <div class="transform-grid">
+          <article class="legalese-card">
+            <span class="mono-label" data-i18n="transform.before">What the contract says</span>
+            <p class="legalese">“5. SUMMARY RE-ENTRY. The Landlord may enter and repossess the premises without any court proceedings if rent is delayed by more than 15 days.”</p>
+            <span class="legalese-meta" data-i18n="transform.meta">Residential lease · Bengaluru</span>
+          </article>
+          <div class="transform-arrow" aria-hidden="true"><span>→</span></div>
+          <article class="plain-card">
+            <div class="plain-top">
+              <span class="mono-label" data-i18n="transform.after">What it actually means</span>
+              <span class="risk-pill red"><span aria-hidden="true">🚩</span> <span data-i18n="risk.red">Red flag</span></span>
+            </div>
+            <p class="plain-text" data-i18n="demo.plain">If you’re more than 15 days late with rent, the landlord says they can take the house back without going to court.</p>
+            <div class="plain-row"><span class="mono-label" data-i18n="transform.law">The law behind it</span>
+              <p><span class="law-chip">§ Karnataka Rent Act, 1999 · s.27</span> <span data-i18n="demo.law">Tenants are protected from eviction except through the legal process.</span></p></div>
+            <div class="plain-row action"><span class="action-arrow" aria-hidden="true">→</span>
+              <p><strong data-i18n="clause.whatToDo">What you should do</strong><br><span data-i18n="demo.action">Ask for this clause to be removed, or changed so any eviction follows the court process.</span></p></div>
+          </article>
+        </div>
+        <p class="demo-note" data-i18n="transform.note">Example from a real Lawgorithm analysis. Every legal point links to the exact section it relies on.</p>
+      </section>
+
+      <!-- Spot the red flag -->
+      <section class="game" id="game" aria-labelledby="gameTitle">
+        <div class="game-shell">
+          <div class="game-head">
+            <p class="eyebrow"><span class="eyebrow-dot coral"></span><span data-i18n="game.eyebrow">60-second challenge</span></p>
+            <h2 class="section-title" id="gameTitle" data-i18n="game.title">Can you spot the red flag?</h2>
+            <p class="section-sub" data-i18n="game.sub">Real clauses from Indian rent and job contracts. Pick a colour.</p>
+          </div>
+          <div class="game-card" id="gameCard" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section class="how" id="how" aria-labelledby="howTitle">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-dot coral"></span><span data-i18n="how.eyebrow">How it works</span></p>
+          <h2 class="section-title" id="howTitle" data-i18n="how.title">Built to never bluff.</h2>
+          <p class="section-sub" data-i18n="how.sub">Most AI will confidently make up a law. Lawgorithm checks itself at every step — and tells you when it isn’t sure.</p>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">01</span>
+            <h3 data-i18n="how.s1.t">It reads everything</h3>
+            <p data-i18n="how.s1.d">Your PDF or photo is turned into text and split into clauses, then summarised in simple words.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">02</span>
+            <h3 data-i18n="how.s2.t">It looks up the law</h3>
+            <p data-i18n="how.s2.d">For each clause it searches real Indian statutes — the Contract Act, rent laws and more — not its memory.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">03</span>
+            <h3 data-i18n="how.s3.t">It checks its own work</h3>
+            <p data-i18n="how.s3.d">Every legal claim must point to a real section that actually says it. Anything shaky goes to a human.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">04</span>
+            <h3 data-i18n="how.s4.t">You get a game plan</h3>
+            <p data-i18n="how.s4.d">Red, amber or green for every clause, what it means, and exactly what to ask for before you sign.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="legend-band" aria-label="Risk colours">
+        <div class="legend-item red"><span class="legend-emoji">🚩</span><div><strong data-i18n="risk.red">Red flag</strong><p data-i18n="legend.red">Unfair, very one-sided or may clash with the law. Push back.</p></div></div>
+        <div class="legend-item amber"><span class="legend-emoji">⚠️</span><div><strong data-i18n="risk.amber">Heads up</strong><p data-i18n="legend.amber">Could cost you money or freedom. Read it twice, ask questions.</p></div></div>
+        <div class="legend-item green"><span class="legend-emoji">✅</span><div><strong data-i18n="risk.green">Looks fine</strong><p data-i18n="legend.green">Standard stuff. Just check the names, dates and numbers.</p></div></div>
+      </section>
+
+      <!-- Law library -->
+      <section class="library" aria-labelledby="libraryTitle">
+        <div class="section-head center">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="library.eyebrow">The law library</span></p>
+          <h2 class="section-title" id="libraryTitle" data-i18n="library.title">Real Indian law. Not memory.</h2>
+          <p class="section-sub" data-i18n="library.sub">Every legal point Lawgorithm makes must cite a real section from this library — or it’s flagged for a human check.</p>
+        </div>
+        <div class="library-stats">
+          <div><strong class="count-up" data-count-to="2210">2,210</strong><span data-i18n="library.n1">sections of law</span></div>
+          <div><strong class="count-up" data-count-to="25">25</strong><span data-i18n="library.n2">Acts, central &amp; state</span></div>
+          <div><strong class="count-up" data-count-to="7">7</strong><span data-i18n="library.n3">languages</span></div>
+          <div><strong>0</strong><span data-i18n="library.n4">contracts stored</span></div>
+        </div>
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track">
+            <span>Indian Contract Act, 1872</span><span>Transfer of Property Act, 1882</span><span>Code on Wages, 2019</span><span>Industrial Relations Code, 2020</span><span>Code on Social Security, 2020</span><span>OSH Code, 2020</span><span>Karnataka Rent Act, 1999</span><span>Tamil Nadu Tenancy Act, 2017</span><span>Maharashtra Rent Control Act, 1999</span><span>West Bengal Premises Tenancy Act, 1997</span><span>Delhi Rent Control Act, 1958</span><span>Registration Act, 1908</span><span>Specific Relief Act, 1963</span><span>Arbitration Act, 1996</span><span>POSH Act, 2013</span><span>Model Tenancy Act, 2021</span>
+            <span>Indian Contract Act, 1872</span><span>Transfer of Property Act, 1882</span><span>Code on Wages, 2019</span><span>Industrial Relations Code, 2020</span><span>Code on Social Security, 2020</span><span>OSH Code, 2020</span><span>Karnataka Rent Act, 1999</span><span>Tamil Nadu Tenancy Act, 2017</span><span>Maharashtra Rent Control Act, 1999</span><span>West Bengal Premises Tenancy Act, 1997</span><span>Delhi Rent Control Act, 1958</span><span>Registration Act, 1908</span><span>Specific Relief Act, 1963</span><span>Arbitration Act, 1996</span><span>POSH Act, 2013</span><span>Model Tenancy Act, 2021</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Privacy promise -->
+      <section class="promise" aria-labelledby="promiseTitle">
+        <div class="promise-seal" aria-hidden="true"><span>DPDP</span><span>2023</span></div>
+        <div>
+          <h2 class="section-title small" id="promiseTitle" data-i18n="promise.title">Your contract stays yours.</h2>
+          <p data-i18n="promise.sub">Processed in memory, never saved. Personal numbers are removed before any AI sees the text. Erased within 60 minutes — or right now, with one click.</p>
+          <a class="link-button" href="#/privacy" data-i18n="promise.link">Read the privacy notice</a>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq" aria-labelledby="faqTitle">
+        <h2 class="section-title" id="faqTitle" data-i18n="faq.title">Questions people ask</h2>
+        <div class="faq-list">
+          <details><summary data-i18n="faq.q1">Is this a lawyer?</summary><p data-i18n="faq.a1">No. Lawgorithm explains contracts in plain words and shows the law behind each point. For anything marked red, talk to a lawyer before you sign.</p></details>
+          <details><summary data-i18n="faq.q2">Which contracts can it read?</summary><p data-i18n="faq.a2">Rental and job contracts from India — as a PDF, a Word file or just a photo.</p></details>
+          <details><summary data-i18n="faq.q3">Is it free?</summary><p data-i18n="faq.a3">Yes. It runs on free AI capacity, so on very busy days it may ask you to try again later.</p></details>
+          <details><summary data-i18n="faq.q4">What happens to my document?</summary><p data-i18n="faq.a4">It’s read in memory, never saved, and erased within 60 minutes. Phone numbers, PAN, Aadhaar and bank details are removed before any AI sees the text.</p></details>
+          <details><summary data-i18n="faq.q5">How sure is it?</summary><p data-i18n="faq.a5">Every legal claim must point to a real section of law, and a second check confirms the law actually says it. When it isn’t sure, it tells you instead of guessing.</p></details>
+        </div>
+      </section>
+
+      <!-- Finale -->
+      <section class="finale" aria-labelledby="finaleTitle">
+        <div class="finale-stamp" aria-hidden="true">
+          <span class="stamp stamp-pending" data-i18n="finale.stampFrom">PENDING</span>
+          <span class="stamp stamp-resolved" data-i18n="finale.stampTo">RESOLVED</span>
+        </div>
+        <h2 class="finale-title" id="finaleTitle">
+          <span data-i18n="finale.line1">The best court case</span>
+          <em data-i18n="finale.line2">is the one that never gets filed.</em>
+        </h2>
+        <p class="finale-sub" data-i18n="finale.sub">Two minutes with your contract today can save years in a courtroom later.</p>
+        <a class="btn btn-cream big" href="#start" data-scroll-to="start"><span data-i18n="finale.cta">Decode my contract</span> <span class="btn-arrow" aria-hidden="true">→</span></a>
+        <p class="finale-tagline"><span class="finale-tagline-mark">lawgorithm<span>.</span></span> <span data-i18n="tagline">Your Rights in Your Language.</span></p>
+      </section>
+    </section>
+
+    <!-- ═════════ PROGRESS ═════════ -->
+    <section class="view" id="view-progress" data-view="progress" hidden>
+      <div class="progress-card">
+        <p class="eyebrow"><span class="eyebrow-dot pulse"></span><span data-i18n="progress.eyebrow">Analysing</span> · <span class="mono" id="progressFile"></span></p>
+        <h2 class="section-title" data-i18n="progress.title">Reading the fine print so you don’t have to.</h2>
+
+        <ol class="stepper" aria-live="polite">
+          <li data-stage="reading"><span class="stepper-dot"></span><span data-i18n="progress.reading">Reading your document</span></li>
+          <li data-stage="summarising"><span class="stepper-dot"></span><span data-i18n="progress.summarising">Writing a simple summary</span></li>
+          <li data-stage="clauses"><span class="stepper-dot"></span><span data-i18n="progress.clauses">Checking each clause against the law</span> <span class="mono stepper-count" id="progressCount"></span></li>
+        </ol>
+
+        <div class="progress-track" aria-hidden="true"><span class="progress-fill" id="progressFill"></span></div>
+        <p class="progress-current mono" id="progressCurrent" aria-live="polite"></p>
+        <p class="progress-note">Runs on a private AI on this server, so nothing leaves it. About a minute per clause — finished clauses appear below as soon as they’re ready.</p>
+      </div>
+      <div class="clause-list" id="progressClauses"></div>
+    </section>
+
+    <!-- ═════════ RESULTS ═════════ -->
+    <section class="view" id="view-results" data-view="results" hidden>
+      <div class="results-head">
+        <button class="back-link" data-view-link="home"><span aria-hidden="true">←</span> <span data-i18n="results.new">New document</span></button>
+        <p class="eyebrow"><span class="eyebrow-dot"></span><span class="mono" id="resultsFile"></span></p>
+        <h1 class="display display-sm" id="resultsTitle"></h1>
+        <div class="verdict" id="verdict"></div>
+        <section class="expert-panel" id="expertPanel" hidden></section>
+        <div class="retention-row">
+          <span class="retention-note" id="retentionNote"></span>
+          <button class="btn btn-outline btn-small" id="deleteNowBtn">🗑 <span data-i18n="privacy.deleteNow">Delete now</span></button>
+        </div>
+      </div>
+
+      <div class="results-grid">
+        <aside class="summary-card" id="summaryCard">
+          <span class="mono-label" data-i18n="results.inShort">In short</span>
+          <p class="summary-text" id="summaryText"></p>
+          <p class="translation-note" id="summaryNote" hidden></p>
+          <dl class="key-terms" id="keyTerms"></dl>
+          <p class="jurisdiction" id="jurisdiction"></p>
+          <div class="risk-ring-row">
+            <div class="risk-ring" id="riskRing" role="img"><span id="riskRingCount">0</span></div>
+            <span class="mono-label" data-i18n="ring.label">clauses checked</span>
+          </div>
+          <section class="action-plan" aria-labelledby="planTitle">
+            <h3 id="planTitle" data-i18n="plan.title">Your action plan</h3>
+            <p class="plan-sub" data-i18n="plan.sub">Everything to ask for before you sign, in one place.</p>
+            <ol class="plan-list" id="planList"></ol>
+            <div class="plan-actions">
+              <button class="btn btn-outline btn-small" id="planCopy"><span aria-hidden="true">⧉</span> <span data-i18n="plan.copy">Copy list</span></button>
+              <button class="btn btn-outline btn-small" id="planPrint"><span aria-hidden="true">⎙</span> <span data-i18n="plan.print">Print</span></button>
+            </div>
+          </section>
+          <p class="disclaimer" data-i18n="results.disclaimer">Lawgorithm explains contracts. It isn’t a lawyer — for anything marked red, talk to one before you sign.</p>
+        </aside>
+
+        <div class="results-main">
+          <div class="toolbar">
+            <div class="filters" role="tablist" aria-label="Filter by risk" data-i18n-attr="aria-label:results.filter">
+              <button class="filter is-active" data-filter="all"><span data-i18n="results.all">All</span> <span class="filter-count" id="countAll">0</span></button>
+              <button class="filter red" data-filter="red"><span class="pill-dot red"></span><span data-i18n="risk.red">Red flag</span> <span class="filter-count" id="countRed">0</span></button>
+              <button class="filter amber" data-filter="amber"><span class="pill-dot amber"></span><span data-i18n="risk.amber">Heads up</span> <span class="filter-count" id="countAmber">0</span></button>
+              <button class="filter green" data-filter="green"><span class="pill-dot green"></span><span data-i18n="risk.green">Looks fine</span> <span class="filter-count" id="countGreen">0</span></button>
+            </div>
+            <div class="segmented small" role="radiogroup" aria-label="View">
+              <button role="radio" aria-checked="true" class="seg is-active" data-layout="cards" data-i18n="results.cards">Cards</button>
+              <button role="radio" aria-checked="false" class="seg" data-layout="document" data-i18n="results.document">Document</button>
+            </div>
+          </div>
+
+          <p class="translate-status" id="translateStatus" aria-live="polite" hidden></p>
+          <div class="clause-list" id="clauseList"></div>
+          <div class="doc-view" id="docView" hidden></div>
+          <div class="failed-list" id="failedList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════ EXPERT CHECK (the person's private ticket page) ═════════ -->
+    <section class="view" id="view-expert" data-view="expert" hidden>
+      <div class="results-head">
+        <button class="back-link" data-view-link="home"><span aria-hidden="true">←</span> <span data-i18n="results.new">New document</span></button>
+        <p class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="expert.eyebrow">Expert check</span></p>
+        <h1 class="display display-sm" data-i18n="expert.title">Your expert check</h1>
+        <p class="section-sub" id="expertStatus"></p>
+        <div class="retention-row">
+          <span class="retention-note" id="expertRetention"></span>
+          <button class="btn btn-outline btn-small" id="expertCopyLink"><span aria-hidden="true">⧉</span> <span data-i18n="expert.copyLink">Copy link</span></button>
+          <button class="btn btn-outline btn-small" id="expertDelete">🗑 <span data-i18n="privacy.deleteNow">Delete now</span></button>
+        </div>
+      </div>
+      <div class="expert-list" id="expertList"></div>
+    </section>
+
+    <!-- ═════════ PRIVACY NOTICE ═════════ -->
+    <section class="view" id="view-privacy" data-view="privacy" hidden>
+      <div class="privacy-page">
+        <button class="back-link" data-view-link="home"><span aria-hidden="true">←</span> <span data-i18n="privacy.back">Back</span></button>
+        <p class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="privacy.eyebrow">Privacy notice · DPDP Act, 2023</span></p>
+        <h1 class="display display-sm" data-i18n="privacy.title">Your contract stays yours.</h1>
+        <ol class="privacy-list" id="privacyList"></ol>
+      </div>
+    </section>
+
+    <!-- ═════════ REVIEWER DESK ═════════ -->
+    <section class="view" id="view-review" data-view="review" hidden>
+      <div class="section-head">
+        <p class="eyebrow"><span class="eyebrow-dot coral"></span><span data-i18n="review.eyebrow">Reviewer desk</span></p>
+        <h1 class="display display-sm" data-i18n="review.title">Second pair of eyes.</h1>
+        <p class="section-sub" data-i18n="review.sub">Clauses the AI wasn’t sure about, or flagged red. Approve, fix, or send back for more evidence — every decision is saved to make the AI better.</p>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="expert-desk" id="expertDesk" hidden></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div>
+        <span class="mono-label" data-i18n="footer.made">Made in India, for everyone who signs.</span>
+        <p class="footer-made" data-i18n="tagline">Your Rights in Your Language.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#how" data-scroll-to="how" data-i18n="nav.how">How it works</a>
+        <a href="#game" data-scroll-to="game" data-i18n="footer.game">Spot the red flag</a>
+        <a href="#/privacy" data-i18n="footer.privacy">Privacy</a>
+        <a href="#/review" id="footerReviewLink" data-i18n="footer.reviewers" hidden>Reviewer sign-in</a>
+      </nav>
+    </div>
+    <p class="footer-wordmark" aria-hidden="true">lawgorithm<span class="wordmark-dot">.</span></p>
+    <p class="footer-note"><span data-i18n="footer.note">Not legal advice.</span> <span data-i18n="footer.legal">Lawgorithm explains contracts; it doesn’t replace a lawyer.</span></p>
+  </footer>
+
+  <!-- ═════════ LANGUAGE PICKER ═════════ -->
+  <dialog class="lang-dialog" id="langDialog" aria-labelledby="langTitle">
+    <div class="lang-sheet">
+      <p class="eyebrow"><span class="eyebrow-dot"></span><span>Language · भाषा · மொழி · ভাষা</span></p>
+      <p class="lang-tagline" data-i18n="tagline">Your Rights in Your Language.</p>
+      <h2 class="section-title" id="langTitle">Choose your language</h2>
+      <p class="section-sub">The whole site — and your contract’s explanation — will be shown in it. You can change it any time.</p>
+      <div class="lang-grid" id="langGrid"></div>
+    </div>
+  </dialog>
+
+  <!-- ═════════ REVIEW EDIT DIALOG ═════════ -->
+  <dialog class="edit-dialog" id="editDialog" aria-labelledby="editTitle">
+    <form method="dialog" class="edit-form" id="editForm">
+      <h2 class="section-title small" id="editTitle" data-i18n="review.editTitle">Correct this clause</h2>
+      <label><span data-i18n="review.fExplanation">Plain explanation</span><textarea name="explanation" rows="4" required></textarea></label>
+      <label><span data-i18n="review.fAction">What the person should do</span><textarea name="action" rows="3"></textarea></label>
+      <fieldset class="risk-radios">
+        <legend data-i18n="review.fRisk">Risk</legend>
+        <label><input type="radio" name="risk" value="red" /> <span class="pill-dot red"></span><span data-i18n="risk.red">Red flag</span></label>
+        <label><input type="radio" name="risk" value="amber" /> <span class="pill-dot amber"></span><span data-i18n="risk.amber">Heads up</span></label>
+        <label><input type="radio" name="risk" value="green" /> <span class="pill-dot green"></span><span data-i18n="risk.green">Looks fine</span></label>
+      </fieldset>
+      <label><span data-i18n="review.fReason">Why was the AI wrong? (saved for training)</span><textarea name="reason" rows="2" required></textarea></label>
+      <div class="edit-actions">
+        <button class="btn btn-outline" value="cancel" formnovalidate data-i18n="review.cancel">Cancel</button>
+        <button class="btn btn-ink" value="save" data-i18n="review.save">Save correction</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/i18n.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

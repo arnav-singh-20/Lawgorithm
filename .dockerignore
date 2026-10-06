@@ -1,0 +1,16 @@
+# Raw training data: only needed to (re)build the clause corpus/index,
+# never at runtime. The built index lives in chroma_db/ (mounted as a
+# volume in docker-compose.yml).
+lawgorithm_train.jsonl
+Lawgorithm 3/
+data/processed/clause_corpus/
+
+# Local state / caches
+chroma_db/
+lawgorithm.db
+.pytest_cache/
+**/__pycache__/
+.DS_Store
+.env
+.venvs/
+build/

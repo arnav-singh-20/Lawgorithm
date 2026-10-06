@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lawgorithm primary logo</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B1F3B}a:hover{color:#000}
+</style>
+</helmet>
+<div style="width: 760px; height: 480px; box-sizing: border-box; background: #F7F4EE; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; font-family: 'Space Grotesk', sans-serif; color: #1B1F3B">
+<div style="display: flex; align-items: center; gap: 22px">
+<svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+<g stroke="#1B1F3B" stroke-width="7" stroke-linecap="round" fill="none">
+<line x1="60" y1="30" x2="60" y2="98"></line>
+<line x1="42" y1="100" x2="78" y2="100"></line>
+<line x1="24" y1="42" x2="96" y2="42"></line>
+<line x1="24" y1="42" x2="24" y2="62"></line>
+<line x1="96" y1="42" x2="96" y2="62"></line>
+</g>
+<circle cx="60" cy="20" r="9" fill="#1B1F3B"></circle>
+<path d="M8 64 A16 16 0 0 0 40 64 Z" fill="#1B1F3B"></path>
+<path d="M80 64 A16 16 0 0 0 112 64 Z" fill="{{accent}}"></path>
+</svg>
+<div style="font-size: 72px; letter-spacing: -2.5px; line-height: 1"><span style="font-weight: 700">law</span><span style="font-weight: 400">gorithm</span></div>
+</div>
+<div style="font-size: 18px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #4A4E6B">Your rights, in your language.</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E8962E","options":["#E8962E","#D9534F","#2F9E8F","#3B6FD9"]},"$preview":{"width":760,"height":480}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#E8962E' };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  lawgorithm:
+    build: .
+    container_name: lawgorithm_app
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-${GOOGLE_API_KEY}}
+      - LAWGORITHM_MODEL=${LAWGORITHM_MODEL:-gemini-3.6-flash}
+      - DATABASE_URL=sqlite:///./lawgorithm.db
+      - CHROMA_PERSIST_DIR=./chroma_db
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./data:/app/data
+      - ./lawgorithm.db:/app/lawgorithm.db
+    restart: unless-stopped

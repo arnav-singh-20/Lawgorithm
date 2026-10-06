@@ -1,0 +1,35 @@
+# Secrets -- never commit (Groq key, reviewer keys, HF token)
+.env
+.env.*
+!.env.example
+
+# Local data that may contain contracts / analyses
+lawgorithm.db
+*.db
+data/expert_reviews/
+
+# Big or regenerated -- rebuild with the scripts in scripts/
+# the 1.85M-clause training dataset (1.3 GB)
+lawgorithm_train.jsonl
+# python -m scripts.build_clause_corpus
+data/processed/
+# downloaded Acts/PDFs used by scripts/build_statute_library.py
+data/sources/
+# python -m scripts.train_clause_classifier
+models/
+# python -m backend.rag.ingest_laws
+chroma_db/
+# python -m scripts.deploy_space --build-only
+build/
+Lawgorithm 3/
+
+# Environments and caches
+.venv/
+.venvs/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+
+# third-party legal templates from the dataset (copyright unclear) -- python -m scripts.build_clause_corpus re-exports them
+data/raw/indian_templates/

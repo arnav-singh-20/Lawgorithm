@@ -1,0 +1,46 @@
+{
+  "_comment": "Model Tenancy Act, 2021 is a model law (applies only where a state adopts it). Sections were hand-entered; verify against the MoHUA text.",
+  "statutes": [
+    {
+      "law": "Model Tenancy Act, 2021",
+      "sections": [
+        {
+          "section": "10",
+          "title": "Security deposit",
+          "domain": "rental",
+          "text": "The landlord shall not receive a security deposit exceeding two months' rent in case of residential premises and a minimum of six months' rent in case of non-residential premises. The landlord shall refund the security deposit on the date of taking over vacant possession of the premises, after making due deductions for any liability of the tenant.",
+          "jurisdiction": "Model Act (applies only where adopted by a state)",
+          "verified": false,
+          "source_type": "model_law",
+          "official_source": "https://mohua.gov.in/upload/whatsnew/60c1a7f7e8fe1MTA.pdf",
+          "source_version": "hand-entered from the Model Tenancy Act, 2021 (model law; in force only where a state adopts it)",
+          "last_verified": ""
+        },
+        {
+          "section": "11",
+          "title": "Revision of rent",
+          "domain": "rental",
+          "text": "In the absence of any agreement on revision of rent, the landlord may revise the rent in accordance with the terms and conditions of the tenancy agreement, and must give at least three months' notice before revising the rent payable by the tenant.",
+          "jurisdiction": "Model Act (applies only where adopted by a state)",
+          "verified": false,
+          "source_type": "model_law",
+          "official_source": "https://mohua.gov.in/upload/whatsnew/60c1a7f7e8fe1MTA.pdf",
+          "source_version": "hand-entered from the Model Tenancy Act, 2021 (model law; in force only where a state adopts it)",
+          "last_verified": ""
+        },
+        {
+          "section": "23",
+          "title": "Termination of tenancy",
+          "domain": "rental",
+          "text": "A tenant or landlord may terminate a tenancy by giving notice in writing as agreed between the parties in the tenancy agreement, or, in the absence of such agreement, in accordance with the notice period prescribed for the type of tenancy, including provisions restricting termination during a fixed lock-in period agreed by both parties.",
+          "jurisdiction": "Model Act (applies only where adopted by a state)",
+          "verified": false,
+          "source_type": "model_law",
+          "official_source": "https://mohua.gov.in/upload/whatsnew/60c1a7f7e8fe1MTA.pdf",
+          "source_version": "hand-entered from the Model Tenancy Act, 2021 (model law; in force only where a state adopts it)",
+          "last_verified": ""
+        }
+      ]
+    }
+  ]
+}
