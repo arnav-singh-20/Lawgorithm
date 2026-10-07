@@ -3,15 +3,12 @@ import * as DocumentPicker from "expo-document-picker";
 import { File as FsFile, Paths } from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { Redirect, router } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 
 import { Payment, PickedFile, sampleText, startAnalysis } from "../api";
 import { useAppState } from "../appState";
-import { Logo } from "../components/Logo";
 import { Btn, Card, ErrorBanner, Row, Screen, Txt } from "../components/ui";
-import { siteUrl } from "../config";
 import { errorText } from "../errors";
 import { useI18n } from "../i18n";
 import { Order, PaySheet, prepareOrder } from "../payments";
@@ -21,7 +18,7 @@ const ACCEPTED = /\.(pdf|png|jpe?g|webp|heic|docx|txt)$/i;
 
 export default function Home() {
   const theme = useTheme();
-  const { t, chosen, meta } = useI18n();
+  const { t, chosen } = useI18n();
   const { config, checks } = useAppState();
   const [docType, setDocType] = useState<"rental" | "employment">("rental");
   const [file, setFile] = useState<PickedFile | null>(null);
@@ -101,19 +98,9 @@ export default function Home() {
   }
 
   const label = needsPayment ? t("pay.button", { price: config.price_analysis }) : t("upload.cta");
-  const open = (route: string) => WebBrowser.openBrowserAsync(siteUrl(route)).catch(() => {});
 
   return (
     <Screen>
-      <Row style={{ justifyContent: "space-between" }}>
-        <Logo />
-        <Pressable onPress={() => router.push("/language")} accessibilityRole="button" accessibilityLabel={t("app.language")}
-          style={{ flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1, borderColor: theme.line }}>
-          <Text style={{ fontSize: 14 }}>🌐</Text>
-          <Text style={{ fontFamily: fonts.medium, fontSize: 14, color: theme.text }}>{meta.native}</Text>
-        </Pressable>
-      </Row>
-
       <View style={{ gap: 6, marginTop: 6 }}>
         <Txt style={{ fontFamily: fonts.displayItalic, fontSize: 18, color: theme.accent }}>{t("tagline")}</Txt>
         <Txt kind="display">{t("hero.title.a")} <Text style={{ fontFamily: fonts.displayItalic }}>{t("hero.title.b")}</Text></Txt>
@@ -172,14 +159,6 @@ export default function Home() {
         </Card>
       ) : null}
 
-      <Row style={{ justifyContent: "center", marginTop: 6 }}>
-        <Btn kind="link" title={t("footer.privacy")} onPress={() => router.push("/privacy")} />
-        {config.payments_enabled ? <Btn kind="link" title={t("footer.pricing")} onPress={() => open("pricing")} /> : null}
-        <Btn kind="link" title={t("footer.terms")} onPress={() => open("terms")} />
-        {config.payments_enabled ? <Btn kind="link" title={t("footer.refunds")} onPress={() => open("refunds")} /> : null}
-        <Btn kind="link" title={t("footer.contact")} onPress={() => open("contact")} />
-      </Row>
-      <Txt kind="small" style={{ textAlign: "center" }}>{t("footer.legal")}</Txt>
 
       <PaySheet order={order} description={file?.name || "Contract check"} onDone={payment => { setOrder(null); if (payment) start(payment); else setError(t("pay.cancelled")); }} />
     </Screen>

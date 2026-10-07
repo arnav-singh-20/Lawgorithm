@@ -3,7 +3,6 @@ import { router } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
-import { Logo } from "../components/Logo";
 import { Screen, Txt } from "../components/ui";
 import { LANGUAGES, useI18n } from "../i18n";
 import { fonts, radius, useTheme } from "../theme";
@@ -18,7 +17,6 @@ export default function LanguageScreen() {
   };
   return (
     <Screen>
-      <Logo />
       <Txt kind="label">Language · भाषा · மொழி · ভাষা</Txt>
       <Txt kind="display" style={{ fontStyle: "italic", fontFamily: fonts.displayItalic, color: t.accent, fontSize: 22, lineHeight: 28 }}>
         {tr("tagline")}

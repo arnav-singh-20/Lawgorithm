@@ -4,15 +4,25 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextProps, 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { DECISION_ICON } from "../decisions";
+import { AppFooter, AppHeader } from "./Chrome";
 import { useI18n } from "../i18n";
 import { decisionColor, fonts, radius, riskColor, useTheme } from "../theme";
 
-export function Screen({ children, scroll = true }: { children: React.ReactNode; scroll?: boolean }) {
+/** Every screen: header (menu · logo · language), content, footer. */
+export function Screen({ children, scroll = true, header = true, footer = true }: {
+  children: React.ReactNode; scroll?: boolean; header?: boolean; footer?: boolean;
+}) {
   const t = useTheme();
   const body = scroll
-    ? <ScrollView contentContainerStyle={{ padding: 18, paddingBottom: 48, gap: 16 }} keyboardShouldPersistTaps="handled">{children}</ScrollView>
+    ? <ScrollView contentContainerStyle={{ padding: 18, paddingBottom: 48, gap: 16 }} keyboardShouldPersistTaps="handled">
+        {children}{footer ? <AppFooter /> : null}</ScrollView>
     : <View style={{ flex: 1, padding: 18, gap: 16 }}>{children}</View>;
-  return <SafeAreaView style={{ flex: 1, backgroundColor: t.bg }} edges={["top", "left", "right"]}>{body}</SafeAreaView>;
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: t.bg }} edges={["top", "left", "right"]}>
+      {header ? <AppHeader /> : null}
+      {body}
+    </SafeAreaView>
+  );
 }
 
 type TxtProps = TextProps & { kind?: "body" | "soft" | "title" | "display" | "label" | "strong" | "small"; color?: string };

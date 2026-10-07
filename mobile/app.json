@@ -47,7 +47,8 @@
             "backgroundColor": "#0c0c10"
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "scheme": "lawgorithm",
     "description": "Your Rights in Your Language. Understand your rental or job contract in plain words, with the Indian law behind every clause.",

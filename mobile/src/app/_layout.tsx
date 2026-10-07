@@ -8,6 +8,7 @@ import React, { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AppStateProvider } from "../appState";
+import { DrawerProvider } from "../components/Chrome";
 import { I18nProvider, useI18n } from "../i18n";
 import { useTheme } from "../theme";
 
@@ -35,7 +36,9 @@ export default function Layout() {
     <SafeAreaProvider>
       <I18nProvider>
         <AppStateProvider>
-          <Root />
+          <DrawerProvider>
+            <Root />
+          </DrawerProvider>
         </AppStateProvider>
       </I18nProvider>
     </SafeAreaProvider>
