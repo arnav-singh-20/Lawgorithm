@@ -1,0 +1,25 @@
+// A few phrases only the app needs (the rest come from the website, via
+// scripts/sync-strings.js -> strings.json).
+export const APP_STRINGS: Record<string, Record<string, string>> = {
+  en: { "app.pick": "Choose a file", "app.pickSub": "PDF, photo or Word file", "app.change": "Change", "app.language": "Language",
+        "app.links": "More", "app.share": "Share", "app.openSite": "Open on the website", "app.close": "Close",
+        "app.payTitle": "Secure payment", "app.myChecks": "Your expert checks" },
+  hi: { "app.pick": "फ़ाइल चुनें", "app.pickSub": "PDF, फ़ोटो या Word फ़ाइल", "app.change": "बदलें", "app.language": "भाषा",
+        "app.links": "और", "app.share": "शेयर करें", "app.openSite": "वेबसाइट पर खोलें", "app.close": "बंद करें",
+        "app.payTitle": "सुरक्षित भुगतान", "app.myChecks": "आपकी विशेषज्ञ जाँचें" },
+  mr: { "app.pick": "फाइल निवडा", "app.pickSub": "PDF, फोटो किंवा Word फाइल", "app.change": "बदला", "app.language": "भाषा",
+        "app.links": "अधिक", "app.share": "शेअर करा", "app.openSite": "वेबसाइटवर उघडा", "app.close": "बंद करा",
+        "app.payTitle": "सुरक्षित पेमेंट", "app.myChecks": "तुमच्या तज्ज्ञ तपासण्या" },
+  ta: { "app.pick": "கோப்பைத் தேர்ந்தெடு", "app.pickSub": "PDF, புகைப்படம் அல்லது Word கோப்பு", "app.change": "மாற்று", "app.language": "மொழி",
+        "app.links": "மேலும்", "app.share": "பகிர்", "app.openSite": "இணையதளத்தில் திற", "app.close": "மூடு",
+        "app.payTitle": "பாதுகாப்பான கட்டணம்", "app.myChecks": "உங்கள் நிபுணர் சரிபார்ப்புகள்" },
+  bn: { "app.pick": "ফাইল বেছে নিন", "app.pickSub": "PDF, ছবি বা Word ফাইল", "app.change": "বদলান", "app.language": "ভাষা",
+        "app.links": "আরও", "app.share": "শেয়ার করুন", "app.openSite": "ওয়েবসাইটে খুলুন", "app.close": "বন্ধ করুন",
+        "app.payTitle": "নিরাপদ পেমেন্ট", "app.myChecks": "আপনার বিশেষজ্ঞ যাচাই" },
+  te: { "app.pick": "ఫైల్ ఎంచుకోండి", "app.pickSub": "PDF, ఫోటో లేదా Word ఫైల్", "app.change": "మార్చండి", "app.language": "భాష",
+        "app.links": "మరిన్ని", "app.share": "షేర్ చేయండి", "app.openSite": "వెబ్‌సైట్‌లో తెరవండి", "app.close": "మూసివేయండి",
+        "app.payTitle": "సురక్షిత చెల్లింపు", "app.myChecks": "మీ నిపుణుల తనిఖీలు" },
+  kn: { "app.pick": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ", "app.pickSub": "PDF, ಫೋಟೋ ಅಥವಾ Word ಫೈಲ್", "app.change": "ಬದಲಿಸಿ", "app.language": "ಭಾಷೆ",
+        "app.links": "ಇನ್ನಷ್ಟು", "app.share": "ಹಂಚಿಕೊಳ್ಳಿ", "app.openSite": "ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ", "app.close": "ಮುಚ್ಚಿ",
+        "app.payTitle": "ಸುರಕ್ಷಿತ ಪಾವತಿ", "app.myChecks": "ನಿಮ್ಮ ತಜ್ಞರ ಪರಿಶೀಲನೆಗಳು" },
+};

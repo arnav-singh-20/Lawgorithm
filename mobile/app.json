@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "Lawgorithm",
+    "slug": "lawgorithm",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lawgorithm.app"
+    },
+    "android": {
+      "package": "com.lawgorithm.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#F7F4EE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-web-browser",
+      "expo-font",
+      "expo-status-bar",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Lawgorithm uses the camera only when you choose to photograph a contract.",
+          "photosPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "backgroundColor": "#F7F4EE",
+          "dark": {
+            "image": "./assets/splash-icon.png",
+            "backgroundColor": "#0c0c10"
+          }
+        }
+      ]
+    ],
+    "scheme": "lawgorithm",
+    "description": "Your Rights in Your Language. Understand your rental or job contract in plain words, with the Indian law behind every clause.",
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
